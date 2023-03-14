@@ -8,9 +8,9 @@ class ForgetPassword3 extends StatefulWidget {
 }
 
 class _ForgetPassword3State extends State<ForgetPassword3> {
-var formkey = GlobalKey<FormState>();
-bool showpassword1 = true;
-bool showpassword2 = true;
+  var formkey = GlobalKey<FormState>();
+  bool showpassword1 = true;
+  bool showpassword2 = true;
 
   @override
   Widget build(BuildContext context) {
@@ -85,8 +85,8 @@ bool showpassword2 = true;
               ),
               Padding(
                 padding: const EdgeInsetsDirectional.only(
-                  start: 20,
-                  end: 20
+                    start: 20,
+                    end: 20
                 ),
                 child: TextFormField(
                   style: TextStyle(
