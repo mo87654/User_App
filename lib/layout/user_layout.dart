@@ -50,7 +50,7 @@ class _UserLayoutState extends State<UserLayout> {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       appBar: AppBar(
-        backgroundColor: color(),
+        backgroundColor: Color(0xff515281),
         leading: leadingicon[2 - currentIndex],
         title: Text(
           title[2 - currentIndex],
@@ -208,6 +208,7 @@ class _UserLayoutState extends State<UserLayout> {
       body: userScreens[2 - currentIndex],
 
       bottomNavigationBar: BottomNavigationBar(
+
           iconSize: 35,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white,
