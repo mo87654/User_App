@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:user_app/modules/AboutUs%20Screen/AboutUs.dart';
 import '../modules/change_password screen/change_password.dart';
 import '../modules/help screen/help_screen.dart';
 import '../modules/home screen/home.dart';
+import '../modules/login screen/login.dart';
 import '../modules/my_account screen/My_account.dart';
 import '../modules/notifications screen/notification.dart';
 import '../modules/personal_info screen/personal_info.dart';
@@ -47,7 +50,7 @@ class _UserLayoutState extends State<UserLayout> {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       appBar: AppBar(
-        backgroundColor: color(),
+        backgroundColor: Color(0xff515281),
         leading: leadingicon[2 - currentIndex],
         title: Text(
           title[2 - currentIndex],
@@ -67,7 +70,7 @@ class _UserLayoutState extends State<UserLayout> {
                       fontSize: 17
                   ),
                 ),
-                subtitle: const Text('E-mail address',
+                subtitle:  Text(FirebaseAuth.instance.currentUser!.email!,
                   style: TextStyle(
                       fontSize: 17
                   ),
@@ -158,7 +161,11 @@ class _UserLayoutState extends State<UserLayout> {
                 ),
 
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.push(context,
+                      MaterialPageRoute(
+                          builder: (context) => AboutUsScreen()
+                      )
+                  );
                 },
               ),
 
@@ -187,8 +194,9 @@ class _UserLayoutState extends State<UserLayout> {
                   ),
                 ),
 
-                onTap: () {
-                  Navigator.pop(context);
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Login(),));
                 },
               ),
             ],
@@ -200,6 +208,7 @@ class _UserLayoutState extends State<UserLayout> {
       body: userScreens[2 - currentIndex],
 
       bottomNavigationBar: BottomNavigationBar(
+
           iconSize: 35,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white,
