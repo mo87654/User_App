@@ -38,11 +38,6 @@ class _HomepageState extends State<Homepage> {
                 // mainAxisAlignment: MainAxisAlignment.center,
 
                 children:   [
-                  IconButton(onPressed: () async{
-                    await FirebaseAuth.instance.signOut();
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Login(),));
-                  }, icon: Icon(Icons.logout))
-
 
                 ],
               ),

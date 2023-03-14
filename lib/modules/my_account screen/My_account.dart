@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:user_app/models/dataBase.dart';
 
 
 class MyAccount extends StatefulWidget {
@@ -15,12 +17,29 @@ class _MyAccountState extends State<MyAccount> {
   bool status = false;
   PickedFile? _imageFile;
   String? image64;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+   var user;
 
   final ImagePicker picker = ImagePicker();
   Color purple = const Color.fromRGBO(38, 107, 128, 0.9490196078431372);
   Color lpurplet = const Color.fromRGBO(0, 102, 128, 0.9490196078431372);
   Color white = const Color.fromRGBO(254, 254, 254, 1.0);
 
+
+
+
+  @override
+  void initState() {
+
+    super.initState();
+    initUser();
+  }
+  initUser() async {
+    user = (await _auth.currentUser!) as UsersData;
+    setState(() {
+
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -89,34 +108,33 @@ class _MyAccountState extends State<MyAccount> {
             child: Column(
 
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children:const [
+                children: [
                   Padding(
                     padding: EdgeInsets.only(bottom: 25.0),
-                    child: Text('User name',
+                    child: Text(FirebaseAuth.instance.currentUser!.displayName??"No Name" ,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    ),
+
+                  ),
+
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 25.0),
+                    child: Text(FirebaseAuth.instance.currentUser!.email!,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                      ),
 
+                      ),
                     ),
                   ),
 
                   Padding(
                     padding: EdgeInsets.only(bottom: 25.0),
-                    child: Text('Student Name',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
 
-
-                      ),
-
-                    ),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 25.0),
-                    child: Text('Email Address',
+                    child:  Text('student name',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
