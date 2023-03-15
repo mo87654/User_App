@@ -23,7 +23,7 @@ class _ForgetPassword3State extends State<ForgetPassword3> {
               Container(
                 padding: EdgeInsets.symmetric(vertical: 15),
                 child: Image(
-                  image: AssetImage('assets/images/bus.jpg'),
+                  image: AssetImage('assets/images/bus1.jpg'),
                   width: double.infinity,
                   height: 300,
                   fit: BoxFit.cover,
@@ -155,7 +155,7 @@ class _ForgetPassword3State extends State<ForgetPassword3> {
                       fontSize: 17,
                     ),
                   ),
-                  color: Color(0xff014EB8),
+                  color: Color(0xff515281),
                   shape:RoundedRectangleBorder (
                     borderRadius: BorderRadius.circular (10.0), ),
                 ),

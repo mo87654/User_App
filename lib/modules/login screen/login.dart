@@ -76,7 +76,7 @@ class _LoginState extends State<Login> {
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 15),
                   child: Image(
-                    image: AssetImage('assets/images/bus.jpg'),
+                    image: AssetImage('assets/images/bus1.jpg'),
                     width: double.infinity,
                     height: 300,
                     fit: BoxFit.cover,
@@ -213,6 +213,7 @@ class _LoginState extends State<Login> {
                       'Forget Password?',
                       style: TextStyle(
                         fontSize: 15,
+                        color: Color(0xff515281),
                       ),
                     ),
                   ),
@@ -251,7 +252,7 @@ class _LoginState extends State<Login> {
                         fontSize: 17,
                       ),
                     ),
-                    color: Color(0xff014EB8),
+                    color: Color(0xff515281),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),),
 

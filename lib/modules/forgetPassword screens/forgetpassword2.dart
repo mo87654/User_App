@@ -56,7 +56,7 @@ class _ForgetPassword2State extends State<ForgetPassword2> {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 15),
               child: const Image(
-                image: AssetImage('assets/images/bus.jpg'),
+                image: AssetImage('assets/images/bus1.jpg'),
                 width: double.infinity,
                 height: 300,
                 fit: BoxFit.cover,
@@ -197,7 +197,7 @@ class _ForgetPassword2State extends State<ForgetPassword2> {
 
 
                 },
-                color: const Color(0xff014EB8),
+                color: const Color(0xff515281),
                 shape:RoundedRectangleBorder (
                   borderRadius: BorderRadius.circular (10.0), ),
                 child:isLogin

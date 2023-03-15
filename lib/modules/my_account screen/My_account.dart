@@ -18,7 +18,7 @@ class _MyAccountState extends State<MyAccount> {
   PickedFile? _imageFile;
   String? image64;
   final FirebaseAuth _auth = FirebaseAuth.instance;
-   var user;
+   final user =FirebaseAuth.instance.currentUser!;
 
   final ImagePicker picker = ImagePicker();
   Color purple = const Color.fromRGBO(38, 107, 128, 0.9490196078431372);
@@ -35,7 +35,7 @@ class _MyAccountState extends State<MyAccount> {
     initUser();
   }
   initUser() async {
-    user = (await _auth.currentUser!) as UsersData;
+
     setState(() {
 
     });
@@ -111,7 +111,7 @@ class _MyAccountState extends State<MyAccount> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(bottom: 25.0),
-                    child: Text(FirebaseAuth.instance.currentUser!.displayName??"No Name" ,
+                    child: Text(user.displayName??"No Name" ,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -122,7 +122,7 @@ class _MyAccountState extends State<MyAccount> {
 
                   Padding(
                     padding: EdgeInsets.only(bottom: 25.0),
-                    child: Text(FirebaseAuth.instance.currentUser!.email!,
+                    child: Text(user.email!,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

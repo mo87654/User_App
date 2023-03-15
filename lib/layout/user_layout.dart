@@ -17,6 +17,8 @@ class UserLayout extends StatefulWidget {
   @override
   State<UserLayout> createState() => _UserLayoutState();
 }
+final user =FirebaseAuth.instance.currentUser!;
+
 
 class _UserLayoutState extends State<UserLayout> {
   var currentIndex = 2;
@@ -70,7 +72,7 @@ class _UserLayoutState extends State<UserLayout> {
                       fontSize: 17
                   ),
                 ),
-                subtitle:  Text(FirebaseAuth.instance.currentUser!.email!,
+                subtitle:  Text(user.email!,
                   style: TextStyle(
                       fontSize: 17
                   ),
