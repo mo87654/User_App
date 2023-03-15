@@ -8,6 +8,7 @@ class AboutUsScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text('About Us'),
+          backgroundColor: Color(0xff515281),
         ),
         body: SingleChildScrollView(
             child: Column(
@@ -41,6 +42,7 @@ class AboutUsScreen extends StatelessWidget {
                           CircleAvatar(
                             radius: 40,
                             backgroundImage: AssetImage('assets/images/team_member_1.png'),
+                            backgroundColor: Color(0xff515281),
                           ),
                           SizedBox(height: 10),
                           Text(
@@ -64,10 +66,12 @@ class AboutUsScreen extends StatelessWidget {
                           CircleAvatar(
                             radius: 40,
                             backgroundImage: AssetImage('assets/images/team_member_2.png'),
+                            backgroundColor: Color(0xff515281),
                           ),
                           SizedBox(height: 10),
                           Text(
                             'Ahmed Adel',
+                            
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,

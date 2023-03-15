@@ -13,7 +13,7 @@ class ForgetPassword4 extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(vertical: 15),
             child: Image(
-              image: AssetImage('assets/images/bus.jpg'),
+              image: AssetImage('assets/images/bus1.jpg'),
               width: double.infinity,
               height: 300,
               fit: BoxFit.cover,
@@ -40,7 +40,7 @@ class ForgetPassword4 extends StatelessWidget {
                  Icon(
                    Icons.check_circle_rounded,
                    size: 70,
-                   color: Color(0xff014EB8),
+                   color: Color(0xff515281),
                  ),
                  SizedBox(
                    height: height * .85 * .1,
@@ -93,7 +93,7 @@ class ForgetPassword4 extends StatelessWidget {
                        ),
 
                      ),
-                     color: Color(0xff014EB8),
+                     color: Color(0xff515281),
                      shape:RoundedRectangleBorder (
                        borderRadius: BorderRadius.circular (10.0), ),
 
