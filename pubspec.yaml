@@ -41,6 +41,8 @@ dependencies:
   firebase_auth: ^4.2.9
   flutter_spinkit:
   country_picker:
+  cloud_firestore: ^4.4.4
+  responsive_framework: ^0.2.0
 
 dev_dependencies:
   flutter_test:
