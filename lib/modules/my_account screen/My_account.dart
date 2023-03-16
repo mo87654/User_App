@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:user_app/models/dataBase.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyAccount extends StatefulWidget {
   const MyAccount({Key? key}) : super(key: key);
@@ -17,8 +17,16 @@ class _MyAccountState extends State<MyAccount> {
   bool status = false;
   PickedFile? _imageFile;
   String? image64;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-   final user =FirebaseAuth.instance.currentUser!;
+  //final current = FirebaseAuth.instance;
+
+  final user =  FirebaseAuth.instance.currentUser!;
+
+
+
+  final User =FirebaseFirestore.instance
+      .collection("users")
+      .where("uid",isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots();
+
 
   final ImagePicker picker = ImagePicker();
   Color purple = const Color.fromRGBO(38, 107, 128, 0.9490196078431372);
@@ -37,12 +45,13 @@ class _MyAccountState extends State<MyAccount> {
   initUser() async {
 
     setState(() {
-
+    User == user;
     });
   }
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,6 +59,7 @@ class _MyAccountState extends State<MyAccount> {
             children: [
               Container(
                height: 260 ,
+                width: double.infinity,
                 child: Stack(
                   clipBehavior: Clip.none,
                   alignment: AlignmentDirectional.bottomCenter,
@@ -58,7 +68,9 @@ class _MyAccountState extends State<MyAccount> {
                     Align(
 
                       alignment: AlignmentDirectional.topStart,
-                      child: Container(child: Image.asset('assets/images/background2.jpg'),
+                      child: Container(
+                        child: Image.asset('assets/images/background2.jpg',
+                        fit: BoxFit.cover ,),
                         width: double.infinity,
                         height: 200,
                       ),
@@ -111,7 +123,7 @@ class _MyAccountState extends State<MyAccount> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(bottom: 25.0),
-                    child: Text(user.displayName??"No Name" ,
+                    child: Text(user.displayName??"no nan",
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
