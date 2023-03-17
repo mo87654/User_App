@@ -23,9 +23,19 @@ class _MyAccountState extends State<MyAccount> {
 
 
 
-  final User =FirebaseFirestore.instance
-      .collection("users")
-      .where("uid",isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots();
+  // final User =  FirebaseFirestore.instance
+    //   .collection("users")
+     //  .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      // .snapshots();
+
+  Future<Object> getuserinfo() async {
+    final CollectionReference users = FirebaseFirestore.instance.collection('users');
+     final String uid = user.uid;
+     final result = await  users.doc(uid).get();
+     return result.data()??['name'];
+
+  }
+
 
 
   final ImagePicker picker = ImagePicker();
@@ -45,7 +55,7 @@ class _MyAccountState extends State<MyAccount> {
   initUser() async {
 
     setState(() {
-    User == user;
+
     });
   }
   @override
@@ -123,39 +133,68 @@ class _MyAccountState extends State<MyAccount> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(bottom: 25.0),
-                    child: Text(user.displayName??"no nan",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    child: FutureBuilder(
+                      future: getuserinfo(),
+                      builder: (_ , AsyncSnapshot snapshot){
+
+                        if(snapshot.connectionState == ConnectionState.waiting){
+                          return Center( child: CircularProgressIndicator());
+                        }
+                        return Text(snapshot.data['name'].toString(),
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+
+                          ),
+                        );
+
+                      },
+
                     ),
 
                   ),
 
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 25.0),
-                    child: Text(user.email!,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+             FutureBuilder(
+               future: getuserinfo(),
+               builder: (_ , AsyncSnapshot snapshot){
 
-                      ),
+                 if(snapshot.connectionState == ConnectionState.waiting){
+                   return Center( child: CircularProgressIndicator());
+                 }
+                 return Text(snapshot.data['email'].toString(),
+                   style: TextStyle(
+                     fontSize: 20,
+                     fontWeight: FontWeight.bold,
+
+                   ),
+                 );
+
+               },
+
+             ),
+
+
+                  Padding(
+                    padding: const EdgeInsets.only(top:25.0),
+                    child: FutureBuilder(
+                      future: getuserinfo(),
+                      builder: (_ , AsyncSnapshot snapshot){
+
+                        if(snapshot.connectionState == ConnectionState.waiting){
+                          return Center( child: CircularProgressIndicator());
+                        }
+                        return Text(snapshot.data['Student name'],
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+
+                          ),
+                        );
+
+                      },
+
                     ),
                   ),
-
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 25.0),
-
-                    child:  Text('student name',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-
-
-                    ),
-                  )
-
                 ]
 
             ),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:user_app/modules/AboutUs%20Screen/AboutUs.dart';
@@ -17,7 +18,18 @@ class UserLayout extends StatefulWidget {
   @override
   State<UserLayout> createState() => _UserLayoutState();
 }
-final user =FirebaseAuth.instance.currentUser!;
+final User =FirebaseAuth.instance.currentUser!;
+
+
+
+
+Future<Object> getuserinfo() async {
+  final CollectionReference users = FirebaseFirestore.instance.collection('users');
+  final String uid = User.uid;
+  final result = await  users.doc(uid).get();
+  return result.data()??['name'];
+
+}
 
 
 class _UserLayoutState extends State<UserLayout> {
@@ -32,6 +44,13 @@ class _UserLayoutState extends State<UserLayout> {
     'Notifications',
     'My account'
   ];
+
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     List<Widget> leadingicon = [
@@ -67,18 +86,31 @@ class _UserLayoutState extends State<UserLayout> {
             children: [
               ListTile(
                 leading: const Icon(Icons.person),
-                title: const Text('User name ',
-                  style: TextStyle(
-                      fontSize: 17
-                  ),
+                title: FutureBuilder(
+                future: getuserinfo(),
+               builder: (_ , AsyncSnapshot snapshot) {
+                 if (snapshot.connectionState == ConnectionState.waiting) {
+                   return Center(child: CircularProgressIndicator());
+                 }
+                 return Text(snapshot.data['name'].toString(),
+                   style: TextStyle(
+                     fontSize: 17,
+                     fontWeight: FontWeight.bold,
+
+                   ),
+                 );
+
+               },
                 ),
-                subtitle:  Text(user.email!,
+
+
+                subtitle:  Text(User.email!,
                   style: TextStyle(
                       fontSize: 17
                   ),
                 ),
                 onTap: () {
-                  Navigator.pop(context);
+
                 },
               ),
               const Padding(
