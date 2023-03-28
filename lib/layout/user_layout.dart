@@ -9,6 +9,7 @@ import '../modules/login screen/login.dart';
 import '../modules/my_account screen/My_account.dart';
 import '../modules/notifications screen/notification.dart';
 import '../modules/personal_info screen/personal_info.dart';
+import '../shared/component/SignoutMessage.dart';
 import '../shared/component/colors.dart';
 import '../shared/component/components.dart';
 
@@ -228,10 +229,10 @@ class _UserLayoutState extends State<UserLayout> {
                   ),
                 ),
 
-                onTap: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Login(),));
-                },
+                onTap: () {
+                  showDialog(context: context,
+                    builder: (BuildContext context) => SignOutMessage(),);
+                }
               ),
             ],
           ),
