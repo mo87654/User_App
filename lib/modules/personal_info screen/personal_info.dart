@@ -1,11 +1,37 @@
 import 'package:flutter/material.dart';
-
-import '../../../models/dataBase.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../shared/component/colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class PersonalInfo extends StatelessWidget {
   var formkey = GlobalKey<FormState>();
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _phoneNumberController = TextEditingController();
+
+  @override
+  void initState() {
+    getUserData();
+  }
+
+  void getUserData() async {
+    //final user = FirebaseAuth.instance.currentUser;
+    final userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc()
+        .get();
+    _usernameController.text = userData['username'];
+    _phoneNumberController.text = userData['phoneNumber'];
+  }
+
+  void saveUserData() async {
+    final user = FirebaseAuth.instance.currentUser;
+    await FirebaseFirestore.instance.collection('users').doc().update({
+      'username': _usernameController.text,
+      'phoneNumber': _phoneNumberController.text,
+    });
+  }
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +72,7 @@ class PersonalInfo extends StatelessWidget {
                   keyboardType: TextInputType.visiblePassword,
                   textAlignVertical: TextAlignVertical.top,
                   textInputAction: TextInputAction.next,
+                  controller: _usernameController,
                   validator: (value)
                   {
                     if (value!.isEmpty){
@@ -76,6 +103,7 @@ class PersonalInfo extends StatelessWidget {
                   keyboardType: TextInputType.visiblePassword,
                   textAlignVertical: TextAlignVertical.top,
                   textInputAction: TextInputAction.done,
+                  controller: _phoneNumberController,
                   validator: (value)
                   {
                     if (value!.isEmpty){
@@ -92,10 +120,12 @@ class PersonalInfo extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsetsDirectional.only(start: 20,end: 20),
                 child: MaterialButton(
+
                   onPressed: (){
+                    FirebaseFirestore.instance.collection('users');
                     if (formkey.currentState!.validate())
                     {
-
+                      saveUserData();
                     }
                   },
                   child:Text(
