@@ -21,14 +21,11 @@ class UserLayout extends StatefulWidget {
 }
 final User =FirebaseAuth.instance.currentUser!;
 
-
-
-
 Future<Object> getuserinfo() async {
   final CollectionReference users = FirebaseFirestore.instance.collection('users');
   final String uid = User.uid;
   final result = await  users.doc(uid).get();
-  return result.data()??['name'];
+  return result.data()??['uid'];
 
 }
 
@@ -49,7 +46,18 @@ class _UserLayoutState extends State<UserLayout> {
 
 
 
+  @override
+  void initState() {
 
+    super.initState();
+    initUser();
+  }
+  initUser() async {
+    getuserinfo();
+    setState(() {
+
+    });
+  }
 
 
   @override
@@ -105,10 +113,17 @@ class _UserLayoutState extends State<UserLayout> {
                 ),
 
 
-                subtitle:  Text(User.email!,
-                  style: TextStyle(
-                      fontSize: 17
-                  ),
+                subtitle:  FutureBuilder(
+                  future: getuserinfo(),
+                  builder: (_ , AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    return Text(snapshot.data['email'].toString(),
+
+                    );
+
+                  },
                 ),
                 onTap: () {
 
