@@ -2,8 +2,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import '../../layout/user_layout.dart';
-import '../forgetPassword screens/forgetPassword1.dart';
+import 'package:user_app/modules/New_forgetPasswordScreen/email_Screen.dart';
+import 'package:user_app/modules/home%20screen/home.dart';
+
 
 class Login extends StatefulWidget {
   @override
@@ -13,12 +14,14 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   var formkey = GlobalKey<FormState>();
-  var loginkey = GlobalKey<ScaffoldMessengerState>();
-  var emailcontroller = TextEditingController();
-  var passwordcontroller = TextEditingController();
+
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController passwordcontroller = TextEditingController();
+
+
   bool showpassword = true;
   bool isLoading = false;
-
+  final emailRegex = RegExp(r'^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$');
   //String? selectedItem;
   @override
   String? selectedItem = 'User';
@@ -30,60 +33,76 @@ class _LoginState extends State<Login> {
             .signInWithEmailAndPassword(
           email: emailcontroller.text,
           password: passwordcontroller.text,);
+
+
         setState(() {
           isLoading = true;
         });
+
         return userCredential;
+
 
       } on FirebaseAuthException catch (e) {
         if (e.code == 'invalid-email') {
           print("not valid email");
           setState(() {
-            isLoading = true;
-          });
-          loginkey.currentState?.showSnackBar(
-              SnackBar(content: Text(e.message ?? "")));
-          setState(() {
             isLoading = false;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(backgroundColor: Colors.black38,
+                  padding: EdgeInsets.symmetric(vertical: 18),
+                  content: Text(e.message ??"",style: TextStyle(fontSize: 15),)),);
           });
 
         }
         else if (e.code == 'wrong-password') {
           print("not valid email");
           setState(() {
-            isLoading = true;
-          });
-          loginkey.currentState?.showSnackBar(
-              SnackBar(content: Text(e.message ?? "")));
-          setState(() {
             isLoading = false;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(backgroundColor: Colors.black38,
+                  padding: EdgeInsets.symmetric(vertical: 18),
+                  content: Text(e.message ??"",style: TextStyle(fontSize: 15),)),);
           });
+
+
         }
+
+
+      }catch (e) {
+        setState(() {
+          isLoading = false;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(backgroundColor: Colors.black38,
+                padding: EdgeInsets.symmetric(vertical: 18),
+                content: Text(e.toString(),style: TextStyle(fontSize: 15),)),);
+        });
+
       }
-    }
+
+    } else{return null;}
   }
 
 
   Widget build(BuildContext context) {
     return ScaffoldMessenger(
-      key: loginkey,
       child: Scaffold(
         body: SingleChildScrollView(
           child: Form(
             key: formkey,
             child: Column(
               children: [
+                SizedBox(height: 70,),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 15),
                   child: Image(
-                    image: AssetImage('assets/images/bus1.jpg'),
+                    image: AssetImage('assets/images/bus.jpg'),
                     width: double.infinity,
                     height: 300,
                     fit: BoxFit.cover,
                   ),
                 ),
                 SizedBox(
-                  height: 25,
+                  height: 40,
                 ),
                 Padding(
                   padding: const EdgeInsetsDirectional.only(
@@ -124,12 +143,12 @@ class _LoginState extends State<Login> {
                           isLoading = false;
                         });
                         return "please, write a valid Email ";
+                      }else if (!emailRegex.hasMatch(value)) {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        return 'Please enter a valid email address ';
                       }
-                      // final emailRegex = RegExp(r'^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$');
-                      // if (!emailRegex.hasMatch(value)) {
-                      //   isLoading =false;
-                      //   return 'Please enter a valid email address ';
-                      //}
 
                     },
                   ),
@@ -162,11 +181,12 @@ class _LoginState extends State<Login> {
                                   showpassword = !showpassword;
                                 });
                               },
-                              icon: showpassword ? Icon(
+                              icon: showpassword
+                                  ? Icon(
                                 Icons.visibility_off,
                                 color: Colors.grey,
-                              ) :
-                              Icon(
+                              )
+                                  : Icon(
                                 Icons.visibility,
                               )
                           )
@@ -205,15 +225,14 @@ class _LoginState extends State<Login> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ForgetPassword1()
+                              builder: (context) => forgetPassword()
                           )
                       );
                     },
                     child: Text(
                       'Forget Password?',
                       style: TextStyle(
-                        fontSize: 15,
-                        color: Color(0xff515281),
+                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -231,14 +250,18 @@ class _LoginState extends State<Login> {
                       setState(() {
                         isLoading = true;
                       });
-                      var user = await signin();
+                      var user =  await signin();
                       if (user != null) {
                         setState(() {
                           isLoading = false;
                         });
                         Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (context) => UserLayout(),));
+                          builder: (context) => Homepage(),));
+
                       }
+
+
+
                     },
                     child:isLoading
                         ? SpinKitCircle(
@@ -252,7 +275,7 @@ class _LoginState extends State<Login> {
                         fontSize: 17,
                       ),
                     ),
-                    color: Color(0xff515281),
+                    color: Color(0xff014EB8),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),),
 
