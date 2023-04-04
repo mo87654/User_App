@@ -55,7 +55,7 @@ class _MyAccountState extends State<MyAccount> {
   initUser() async {
 
     setState(() {
-
+      getuserinfo();
     });
   }
   @override
@@ -127,76 +127,78 @@ class _MyAccountState extends State<MyAccount> {
 
           Padding(
             padding: const EdgeInsets.only(top: 25, left: 15),
-            child: Column(
+            child: SingleChildScrollView(
+              child: Column(
 
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 25.0),
-                    child: FutureBuilder(
-                      future: getuserinfo(),
-                      builder: (_ , AsyncSnapshot snapshot){
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 25.0),
+                      child: FutureBuilder(
+                        future: getuserinfo(),
+                        builder: (_ , AsyncSnapshot snapshot){
 
-                        if(snapshot.connectionState == ConnectionState.waiting){
-                          return Center( child: CircularProgressIndicator());
-                        }
-                        return Text(snapshot.data['name'].toString(),
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                          if(snapshot.connectionState == ConnectionState.waiting){
+                            return Center( child: CircularProgressIndicator());
+                          }
+                          return Text(snapshot.data['name'].toString(),
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
 
-                          ),
-                        );
+                            ),
+                          );
 
-                      },
+                        },
 
-                    ),
-
-                  ),
-
-             FutureBuilder(
-               future: getuserinfo(),
-               builder: (_ , AsyncSnapshot snapshot){
-
-                 if(snapshot.connectionState == ConnectionState.waiting){
-                   return Center( child: CircularProgressIndicator());
-                 }
-                 return Text(snapshot.data['email'].toString(),
-                   style: TextStyle(
-                     fontSize: 20,
-                     fontWeight: FontWeight.bold,
-
-                   ),
-                 );
-
-               },
-
-             ),
-
-
-                  Padding(
-                    padding: const EdgeInsets.only(top:25.0),
-                    child: FutureBuilder(
-                      future: getuserinfo(),
-                      builder: (_ , AsyncSnapshot snapshot){
-
-                        if(snapshot.connectionState == ConnectionState.waiting){
-                          return Center( child: CircularProgressIndicator());
-                        }
-                        return Text(snapshot.data['Student name'],
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-
-                          ),
-                        );
-
-                      },
+                      ),
 
                     ),
-                  ),
-                ]
 
+               FutureBuilder(
+                 future: getuserinfo(),
+                 builder: (_ , AsyncSnapshot snapshot){
+
+                   if(snapshot.connectionState == ConnectionState.waiting){
+                     return Center( child: CircularProgressIndicator());
+                   }
+                   return Text(snapshot.data['email'].toString(),
+                     style: TextStyle(
+                       fontSize: 20,
+                       fontWeight: FontWeight.bold,
+
+                     ),
+                   );
+
+                 },
+
+               ),
+
+
+                    Padding(
+                      padding: const EdgeInsets.only(top:25.0),
+                      child: FutureBuilder(
+                        future: getuserinfo(),
+                        builder: (_ , AsyncSnapshot snapshot){
+
+                          if(snapshot.connectionState == ConnectionState.waiting){
+                            return Center( child: CircularProgressIndicator());
+                          }
+                          return Text(snapshot.data['Student name'],
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+
+                            ),
+                          );
+
+                        },
+
+                      ),
+                    ),
+                  ]
+
+              ),
             ),
           ),
 
