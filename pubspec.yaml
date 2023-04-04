@@ -39,9 +39,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^2.7.0
   firebase_auth: ^4.2.9
+  cloud_firestore: ^4.4.5
   flutter_spinkit:
   country_picker:
-  cloud_firestore: ^4.4.4
+
   responsive_framework: ^0.2.0
   firebase_database: ^10.1.0
   http: ^0.13.3
