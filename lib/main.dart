@@ -8,7 +8,7 @@ import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'layout/user_layout.dart';
 import 'modules/login screen/login.dart';
 
-bool? isLogin ;
+bool isLogin = false;
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
