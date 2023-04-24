@@ -29,13 +29,12 @@ class _MyAccountState extends State<MyAccount> {
       // .snapshots();
 
   Future<Object> getuserinfo() async {
-    final CollectionReference users = FirebaseFirestore.instance.collection('users');
+    final CollectionReference users = FirebaseFirestore.instance.collection('Students');
      final String uid = user.uid;
      final result = await  users.doc(uid).get();
      return result.data()??['name'];
 
   }
-
 
 
   final ImagePicker picker = ImagePicker();
@@ -184,7 +183,7 @@ class _MyAccountState extends State<MyAccount> {
                           if(snapshot.connectionState == ConnectionState.waiting){
                             return Center( child: CircularProgressIndicator());
                           }
-                          return Text(snapshot.data['Student name'],
+                          return Text(snapshot.data['grad'],
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
