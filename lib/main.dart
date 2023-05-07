@@ -4,9 +4,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
+import 'package:user_app/modules/home%20screen/home.dart';
 
 import 'layout/user_layout.dart';
 import 'modules/login screen/login.dart';
+
 
 bool isLogin = false;
 
@@ -44,7 +46,7 @@ class MyApp extends StatelessWidget {
         ResponsiveBreakpoint.autoScale(2460, name: '2XL'),
       ],),
 
-      home: isLogin == false? Login(): UserLayout(),
+      home:isLogin == false? Login(): UserLayout(),
       debugShowCheckedModeBanner: false,
     );
   }

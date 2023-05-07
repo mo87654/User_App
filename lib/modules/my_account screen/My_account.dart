@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyAccount extends StatefulWidget {
@@ -20,9 +19,6 @@ class _MyAccountState extends State<MyAccount> {
   //final current = FirebaseAuth.instance;
 
   final user =  FirebaseAuth.instance.currentUser!;
-
-
-
   // final User =  FirebaseFirestore.instance
     //   .collection("users")
      //  .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
