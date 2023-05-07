@@ -22,7 +22,7 @@ class UserLayout extends StatefulWidget {
 final User =FirebaseAuth.instance.currentUser!;
 
 Future<Object> getuserinfo() async {
-  final CollectionReference users = FirebaseFirestore.instance.collection('users');
+  final CollectionReference users = FirebaseFirestore.instance.collection('Students');
   final String uid = User.uid;
   final result = await  users.doc(uid).get();
   return result.data()??['uid'];
@@ -129,6 +129,7 @@ class _UserLayoutState extends State<UserLayout> {
 
                 },
               ),
+
               const Padding(
                 padding: EdgeInsets.only(right: 24,top: 24, bottom: 16),
                 child: Divider(
@@ -272,7 +273,7 @@ class _UserLayoutState extends State<UserLayout> {
               currentIndex = index;
             });
           },
-          items:[
+          items:const [
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.account_box_outlined,
