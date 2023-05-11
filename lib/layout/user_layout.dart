@@ -1,3 +1,4 @@
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,13 @@ class _UserLayoutState extends State<UserLayout> {
     'Notifications',
     'My account'
   ];
+  int _currentIndex = 0;
+  final List<IconData> _iconList = [
+    Icons.person,
+    Icons.notifications,
+    Icons.home,
+
+  ];
 
 
 
@@ -81,9 +89,9 @@ class _UserLayoutState extends State<UserLayout> {
       drawerEnableOpenDragGesture: false,
       appBar: AppBar(
         backgroundColor: Color(0xff515281),
-        leading: leadingicon[2 - currentIndex],
+        leading: leadingicon[2 - _currentIndex],
         title: Text(
-          title[2 - currentIndex],
+          title[2 - _currentIndex],
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -256,52 +264,32 @@ class _UserLayoutState extends State<UserLayout> {
 
         ),
       ),
-      body: userScreens[2 - currentIndex],
+      body: userScreens[2 - _currentIndex],
 
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: AnimatedBottomNavigationBar(
+        splashRadius: 50,
+        iconSize: 30,
+        inactiveColor: Colors.white,
+        activeColor: Colors.white,
+        backgroundColor: Color(0xff515281),
+        splashColor: Colors.cyan,
+        icons: _iconList,
+        activeIndex: _currentIndex,
+        splashSpeedInMilliseconds: 500,
+        gapLocation: GapLocation.none,
+        leftCornerRadius: 32,
+        rightCornerRadius: 32,
+        notchSmoothness: NotchSmoothness.defaultEdge,
+        shadow: const BoxShadow(
+          offset: Offset(0, 1),
+          blurRadius: 15,
+          spreadRadius: 0.7,
+          color: Color(0xff515281),
+        ),
 
-          iconSize: 35,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          currentIndex: currentIndex,
-          backgroundColor: color(),
-          type: BottomNavigationBarType.fixed,
-          onTap: (index){
-            setState(() {
-              currentIndex = index;
-            });
-          },
-          items:const [
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.account_circle_outlined,
-                ),
-                label: ' ',
-                activeIcon: Icon(
-                  Icons.account_box,
-                )
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.notifications_none,
-                ),
-                label: ' ',
-                activeIcon: Icon(
-                    Icons.notifications
-                )
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home_work_outlined,
-                ),
-                label: ' ',
-                activeIcon: Icon(
-                    Icons.home
-                )
-            ),
-          ]
+
+        onTap: (index) => setState(() => _currentIndex = index),
+
       ),
     );
   }
