@@ -54,13 +54,15 @@ class _MyAccountState extends State<MyAccount> {
       getuserinfo();
     });
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
 
             children: [
               Container(
@@ -73,13 +75,32 @@ class _MyAccountState extends State<MyAccount> {
                   children:<Widget> [
                     Align(
 
+
                       alignment: AlignmentDirectional.topStart,
-                      child: Container(
-                        child: Image.asset('assets/images/background2.jpg',
-                        fit: BoxFit.cover ,),
-                        width: double.infinity,
-                        height: 200,
+                      child: CustomPaint(
+                        painter: HeaderCurvedContainer(),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+
+                          child: Align(
+                            alignment: AlignmentDirectional.topCenter,
+                            child: Padding(
+                              padding: EdgeInsets.all(50),
+                              child: Text(
+                                "Profile",
+                                style: TextStyle(
+                                  fontSize: 35,
+                                  letterSpacing: 1.5,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
+
                     ),
 
                     Stack(
@@ -91,6 +112,7 @@ class _MyAccountState extends State<MyAccount> {
                         backgroundImage: _imageFile == null ?
                          AssetImage("assets/images/User3.jpg")
                             : FileImage(File(_imageFile!.path)) as ImageProvider),
+
 
                     CircleAvatar(
                       backgroundColor:  const Color(0xff515281),
@@ -376,3 +398,18 @@ class _MyAccountState extends State<MyAccount> {
   }
 }
 
+class HeaderCurvedContainer extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()..color = Color(0xff515281);
+    Path path = Path()
+      ..relativeLineTo(0, 150)
+      ..quadraticBezierTo(size.width / 2, 225, size.width, 150)
+      ..relativeLineTo(0, -150)
+      ..close();
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
