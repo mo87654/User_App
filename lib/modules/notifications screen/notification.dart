@@ -22,13 +22,20 @@ class _NotificationPageState extends State<NotificationPage> {
 
   Future<void> _getSavedNotifications() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    Notifications = prefs.getStringList('notifications') ?? [];
-    //if (!Notifications.contains('Hello dear, Your child has boarded the bus to go school')) {
-      Notifications.add('Hello dear, Your child has boarded the bus to go school');
-      prefs.setStringList('notifications', Notifications);
-   // }
+    setState(() {
+      Notifications = prefs.getStringList('notifications') ?? [];
+    });
   }
 
+
+/*
+  Future<void> _addNotification(String notification) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      Notifications.add(notification);
+      prefs.setStringList('notifications', Notifications);
+    });
+  }*/
   @override
   void initState() {
     super.initState();
@@ -37,10 +44,11 @@ class _NotificationPageState extends State<NotificationPage> {
 
   @override
   Future<void> dispose() async {
+    super.dispose();
     // Clean up the notifications list
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('notifications');
-    super.dispose();
+
   }
 
   @override
@@ -121,22 +129,18 @@ class _NotificationPageState extends State<NotificationPage> {
 
 
         bool macFound = false;
-        bool notificationShown = false;
+       // bool notificationShown = false;
         for (var fieldValue in fieldValues) {
           if (fieldValue == mac) {
             macFound = true;
-            if (!notificationShown) { // التأكد من عدم عرض الإشعار مرة أخرى
-              showNotification();
-
-              notificationShown = true; // تعيين القيمة على true بعد عرض الإشعار
-            }
-            notificationShown = false;
           }
         }
         if (macFound) {
+          showNotification();
           print('$mac exists in the list!');
         } else {
           print('$mac does not exist in the list.');
+
         }
       }
     });
@@ -284,8 +288,8 @@ showNotification() async {
           'Your child has boarded the bus to go school',
           platformChannelSpecifics,
           payload: 'item x');
-      /* notifications.add('Hello dear, '
-        'Your child has boarded the bus to go school');*/
+       Notifications.add('Hello dear, '
+        'Your child has boarded the bus to go school');
 
       await flutterLocalNotificationsPlugin.schedule(
         0,
