@@ -276,7 +276,7 @@ class _UserLayoutState extends State<UserLayout> {
           items:const [
             BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.account_box_outlined,
+                  Icons.account_circle_outlined,
                 ),
                 label: ' ',
                 activeIcon: Icon(
@@ -294,7 +294,7 @@ class _UserLayoutState extends State<UserLayout> {
             ),
             BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.home_outlined,
+                  Icons.home_work_outlined,
                 ),
                 label: ' ',
                 activeIcon: Icon(
