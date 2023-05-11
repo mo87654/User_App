@@ -83,12 +83,12 @@ class _MyAccountState extends State<MyAccount> {
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height,
 
-                          child: Align(
+                          child: const Align(
                             alignment: AlignmentDirectional.topCenter,
                             child: Padding(
                               padding: EdgeInsets.all(50),
                               child: Text(
-                                "Profile",
+                                "",
                                 style: TextStyle(
                                   fontSize: 35,
                                   letterSpacing: 1.5,
