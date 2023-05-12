@@ -88,6 +88,7 @@ class _UserLayoutState extends State<UserLayout> {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       appBar: AppBar(
+        
         backgroundColor: Color(0xff515281),
         leading: leadingicon[2 - _currentIndex],
         title: Text(
@@ -99,6 +100,8 @@ class _UserLayoutState extends State<UserLayout> {
       ),
       drawer:   SafeArea(
         child: Drawer(
+          shadowColor: Color(0xff4d6aaa),
+       backgroundColor: Colors.white70,
           child: Column(
             children: [
               ListTile(
