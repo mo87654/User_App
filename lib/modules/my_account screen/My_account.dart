@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyAccount extends StatefulWidget {
   const MyAccount({Key? key}) : super(key: key);
@@ -31,8 +32,22 @@ class _MyAccountState extends State<MyAccount> {
      return result.data()??['name'];
 
   }
+  Future<void> savephoto(Path) async {
+    SharedPreferences saveimage = await SharedPreferences.getInstance();
+    saveimage.setString("imagepath", Path);
 
 
+  }
+
+  Future<void> loadimage() async {
+    SharedPreferences saveimage = await SharedPreferences.getInstance();
+    setState(() {
+      _imagepath= saveimage.getString("imagepath");
+    });
+  }
+
+
+  String? _imagepath;
   final ImagePicker picker = ImagePicker();
   Color purple = const Color.fromRGBO(38, 107, 128, 0.9490196078431372);
   Color lpurplet = const Color.fromRGBO(0, 102, 128, 0.9490196078431372);
@@ -47,11 +62,13 @@ class _MyAccountState extends State<MyAccount> {
 
     super.initState();
     initUser();
+    loadimage();
   }
   initUser() async {
 
     setState(() {
       getuserinfo();
+
     });
   }
 
@@ -107,7 +124,9 @@ class _MyAccountState extends State<MyAccount> {
                         alignment: AlignmentDirectional.bottomEnd,
                      clipBehavior: Clip.none,
                       children:<Widget>[
-                    CircleAvatar(
+                        _imagepath != null?
+                        CircleAvatar(backgroundImage: FileImage(File(_imagepath!)),radius: 80,)
+                   :CircleAvatar(
                         radius: 64,
                         backgroundImage: _imageFile == null ?
                          AssetImage("assets/images/User3.jpg")
@@ -133,6 +152,20 @@ class _MyAccountState extends State<MyAccount> {
 
           ),
                   ],
+                ),
+              ),
+              OutlinedButton.icon(
+                icon: const Icon(Icons.save_as_outlined,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  savephoto(_imageFile?.path);
+                },
+                label: const Text("save",
+                  style: TextStyle(
+                    color: Colors.black,
+
+                  ),
                 ),
               ),
             ],
@@ -230,7 +263,7 @@ class _MyAccountState extends State<MyAccount> {
                           if(snapshot.connectionState == ConnectionState.waiting) {
                             return Center(child: CircularProgressIndicator());
                           }
-                          // تعيين النص المستلم من قاعدة البيانات في حقل Textformfield
+
                           gradController.text = snapshot.data['grad'].toString();
                           return TextFormField(
 
@@ -243,7 +276,7 @@ class _MyAccountState extends State<MyAccount> {
                                   width: 2.0,
                                 ),
                               ),
-                              labelText: 'your grad',
+                              labelText: 'your level',
                             ),
                             readOnly: true,
                             style: TextStyle
@@ -332,41 +365,43 @@ class _MyAccountState extends State<MyAccount> {
           const SizedBox(
             height: 20,
           ),
-          Row(
+          Expanded(
+            child: Row(
 
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              OutlinedButton.icon(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                OutlinedButton.icon(
 
-                icon: const Icon(Icons.camera,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  takePhoto(ImageSource.camera);
-                },
-                label: const Text("Camera",
-                  style: TextStyle(
+                  icon: const Icon(Icons.camera,
                     color: Colors.black,
+                  ),
+                  onPressed: () {
+                    takePhoto(ImageSource.camera);
+                  },
+                  label: const Text("Camera",
+                    style: TextStyle(
+                      color: Colors.black,
 
+                    ),
                   ),
                 ),
-              ),
-              OutlinedButton.icon(
+                OutlinedButton.icon(
 
-                icon: const Icon(Icons.image,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  takePhoto(ImageSource.gallery);
-                },
-                label: const Text("Gallery",
-                  style: TextStyle(
-                      color: Colors.black
+                  icon: const Icon(Icons.image,
+                    color: Colors.black,
                   ),
-                ),
+                  onPressed: () {
+                    takePhoto(ImageSource.gallery);
+                  },
+                  label: const Text("Gallery",
+                    style: TextStyle(
+                        color: Colors.black
+                    ),
+                  ),
 
-              ),
-            ],
+                ),
+              ],
+            ),
           )
         ],
       ),

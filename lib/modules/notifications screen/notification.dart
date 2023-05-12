@@ -20,12 +20,12 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage> {
 
-  Future<void> _getSavedNotifications() async {
+ /* Future<void> _getSavedNotifications() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       Notifications = prefs.getStringList('notifications') ?? [];
     });
-  }
+  }*/
 
 
 /*
@@ -39,17 +39,17 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   void initState() {
     super.initState();
-    _getSavedNotifications();
+   // _getSavedNotifications();
   }
 
-  @override
+ /* @override
   Future<void> dispose() async {
     super.dispose();
     // Clean up the notifications list
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('notifications');
 
-  }
+  }*/
 
   @override
     bool isButtonVisible = true;
@@ -132,6 +132,7 @@ class _NotificationPageState extends State<NotificationPage> {
        // bool notificationShown = false;
         for (var fieldValue in fieldValues) {
           if (fieldValue == mac) {
+
             macFound = true;
           }
         }
@@ -161,79 +162,81 @@ class _NotificationPageState extends State<NotificationPage> {
                   borderRadius: BorderRadius.circular(6.0)),
               child: Padding(
                 padding: EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.message_outlined),
-                        Text(
-                          "smart tracking system",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Color(0xff644f73),
+                child: Expanded(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.message_outlined),
+                          Text(
+                            "smart tracking system",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Color(0xff644f73),
+                            ),
                           ),
-                        ),
-                        CircleAvatar(
-                          radius: 2,
-                          backgroundColor: Colors.black38,
-                        ),
-                        Text(
-                          formattedTime,
-                          style: TextStyle(
-                            color: Colors.black54,
+                          CircleAvatar(
+                            radius: 2,
+                            backgroundColor: Colors.black38,
                           ),
+                          Text(
+                            formattedTime,
+                            style: TextStyle(
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                notification,
+                                style: TextStyle(
+                                  fontSize: 17,
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
+                      ),
+                      Row(
                         children: [
                           Expanded(
-                            child: Text(
-                              notification,
-                              style: TextStyle(
-                                fontSize: 17,
+                            child: Visibility(
+                              visible: isButtonVisible,
+                              child: TextButton(
+
+                                onPressed: onButtonPressed,
+
+
+                                style: TextButton.styleFrom(
+                                  primary: const Color(0xff515281),
+                                  backgroundColor: const Color(0xffE0E0E0),
+                                ),
+                                child: Text(
+                                  'OK',
+                                  style: TextStyle(fontSize: 20),
+                                ),
                               ),
                             ),
                           )
                         ],
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Visibility(
-                            visible: isButtonVisible,
-                            child: TextButton(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Visibility(
+                              visible: isChecked,
+                              child: Icon(Icons.library_add_check_rounded,
+                                color: Colors.lightBlueAccent[100],)),
 
-                              onPressed: onButtonPressed,
-
-
-                              style: TextButton.styleFrom(
-                                primary: const Color(0xff515281),
-                                backgroundColor: const Color(0xffE0E0E0),
-                              ),
-                              child: Text(
-                                'OK',
-                                style: TextStyle(fontSize: 20),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Visibility(
-                            visible: isChecked,
-                            child: Icon(Icons.library_add_check_rounded,
-                              color: Colors.lightBlueAccent[100],)),
-
-                      ],
-                    )
-                  ],
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             );
