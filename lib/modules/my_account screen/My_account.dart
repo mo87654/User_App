@@ -49,8 +49,6 @@ class _MyAccountState extends State<MyAccount> {
 
   String? _imagepath;
   final ImagePicker picker = ImagePicker();
-  Color purple = const Color.fromRGBO(38, 107, 128, 0.9490196078431372);
-  Color lpurplet = const Color.fromRGBO(0, 102, 128, 0.9490196078431372);
   Color white = const Color.fromRGBO(254, 254, 254, 1.0);
   final emailController = TextEditingController();
   final nameController = TextEditingController();
@@ -107,7 +105,7 @@ class _MyAccountState extends State<MyAccount> {
                               child: Text(
                                 "",
                                 style: TextStyle(
-                                  fontSize: 35,
+                                  fontSize: 40,
                                   letterSpacing: 1.5,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
@@ -126,16 +124,16 @@ class _MyAccountState extends State<MyAccount> {
                       children:<Widget>[
                         _imagepath != null?
                         CircleAvatar(backgroundImage: FileImage(File(_imagepath!)),radius: 80,)
-                   :CircleAvatar(
-                        radius: 64,
-                        backgroundImage: _imageFile == null ?
+                   :    CircleAvatar(
+                         radius: 64,
+                         backgroundImage: _imageFile == null ?
                          AssetImage("assets/images/User3.jpg")
                             : FileImage(File(_imageFile!.path)) as ImageProvider),
 
 
                     CircleAvatar(
                       backgroundColor:  const Color(0xff515281),
-                      radius: 16,
+                      radius: 19,
                       child: InkWell(
                         onTap: () {
                           setState(() {
@@ -145,7 +143,7 @@ class _MyAccountState extends State<MyAccount> {
                             );
                           });
                         },
-                        child: Icon(Icons.edit, color: white),
+                        child: Icon(Icons.camera_alt_outlined, color: white),
                       ),
                     ),
           ]
@@ -160,6 +158,8 @@ class _MyAccountState extends State<MyAccount> {
                 ),
                 onPressed: () {
                   savephoto(_imageFile?.path);
+                  loadimage();
+
                 },
                 label: const Text("save",
                   style: TextStyle(
@@ -425,6 +425,7 @@ class _MyAccountState extends State<MyAccount> {
     print(_imageFile);
 
     if(_imageFile != null) {
+
       final File newImage = File(_imageFile!.path);
 
       List<int> imageBytes = newImage.readAsBytesSync();
