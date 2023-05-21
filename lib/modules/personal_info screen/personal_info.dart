@@ -1,51 +1,31 @@
+
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import '../../../shared/component/colors.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../shared/component/buttons.dart';
+import '../../shared/component/colors.dart';
 
 
-class PersonalInfo extends StatelessWidget {
-  var formkey = GlobalKey<FormState>();
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _phoneNumberController = TextEditingController();
-
+class PersonalInfo extends StatefulWidget {
   @override
-  void initState() {
-    getUserData();
-  }
+  State<PersonalInfo> createState() => _PersonalInfoState();
+}
 
-  void getUserData() async {
-    //final user = FirebaseAuth.instance.currentUser;
-    final userData = await FirebaseFirestore.instance
-        .collection('users')
-        .doc()
-        .get();
-    _usernameController.text = userData['username'];
-    _phoneNumberController.text = userData['phoneNumber'];
-  }
+class _PersonalInfoState extends State<PersonalInfo> {
+  var formkey = GlobalKey<FormState>();
 
-  void saveUserData() async {
-    final user = FirebaseAuth.instance.currentUser;
-    await FirebaseFirestore.instance.collection('users').doc().update({
-      'username': _usernameController.text,
-      'phoneNumber': _phoneNumberController.text,
-    });
-  }
-
+  bool isLoading =false;
 
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar:AppBar(
         leading:  IconButton(icon:  Icon(Icons.arrow_back),
           onPressed: () {
-          Navigator.pop(context);
+            Navigator.pop(context);
           },
         ),
         title: Text (
             'Personal Info'
         ),
-        backgroundColor: color(),
+        backgroundColor: app_Color(),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -72,7 +52,6 @@ class PersonalInfo extends StatelessWidget {
                   keyboardType: TextInputType.visiblePassword,
                   textAlignVertical: TextAlignVertical.top,
                   textInputAction: TextInputAction.next,
-                  controller: _usernameController,
                   validator: (value)
                   {
                     if (value!.isEmpty){
@@ -103,11 +82,10 @@ class PersonalInfo extends StatelessWidget {
                   keyboardType: TextInputType.visiblePassword,
                   textAlignVertical: TextAlignVertical.top,
                   textInputAction: TextInputAction.done,
-                  controller: _phoneNumberController,
                   validator: (value)
                   {
                     if (value!.isEmpty){
-                      return 'Tele_number required';
+                      return 'phone number is required';
                     }
                     return null;
                   },
@@ -115,62 +93,29 @@ class PersonalInfo extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 140.0),
-              Container(
-                height: 45,
-                width: double.infinity,
-                padding: const EdgeInsetsDirectional.only(start: 20,end: 20),
-                child: MaterialButton(
+              appButton(
+                isLoading: isLoading,
+                text: 'Save',
+                function: ()async{
+                  if (formkey.currentState!.validate()) {
 
-                  onPressed: (){
-                    FirebaseFirestore.instance.collection('users');
-                    if (formkey.currentState!.validate())
-                    {
-                      saveUserData();
-                    }
-                  },
-                  child:Text(
-                    'Save',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-
-                    ),
-
-                  ),
-                  color: Color(0xff515281),
-                  shape:RoundedRectangleBorder (
-                    borderRadius: BorderRadius.circular (10.0), ),
-
-
-                ),
+                  }
+                },
               ),
               SizedBox(
                 height: 25,
               ),
-              Container(
-                height: 45,
-                width: double.infinity,
-                padding: const EdgeInsetsDirectional.only(start: 20,end: 20),
-                child: MaterialButton(
-                  onPressed: (){
-                    Navigator.pop(context);
-                  },
-                  child:Text(
-                    'Cancel',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
 
-                    ),
+              appButton(
+                buttonColor:  Color(0xff818181),
+                isLoading: isLoading,
+                text: 'Cancel',
+                function: (){
+                  Navigator.pop(context);
+                },
 
-                  ),
-                  color: Color(0xff818181),
-                  shape:RoundedRectangleBorder (
-                    borderRadius: BorderRadius.circular (10.0), ),
-
-
-                ),
               ),
+
 
 
             ],
@@ -180,5 +125,3 @@ class PersonalInfo extends StatelessWidget {
     );
   }
 }
-
-

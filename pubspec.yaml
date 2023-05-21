@@ -42,21 +42,38 @@ dependencies:
   cloud_firestore: ^4.4.5
   flutter_spinkit:
   country_picker:
-
   responsive_framework: ^0.2.0
   firebase_database: ^10.1.0
   http: ^0.13.3
 
+
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.2.19
+
   flutter_test:
-    sdk: flutter
+      sdk: flutter
+  flutter_lints: ^2.0.0
+
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/icon3.png"
+  remove_alpha_ios: true
+
+
+flutter_native_splash:
+  ios: true
+  image: assets/images/splash.png
+  android_gravity: center
+  background_image: "assets/images/background.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

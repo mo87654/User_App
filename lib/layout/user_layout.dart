@@ -5,7 +5,6 @@ import 'package:user_app/modules/AboutUs%20Screen/AboutUs.dart';
 import '../modules/change_password screen/change_password.dart';
 import '../modules/help screen/help_screen.dart';
 import '../modules/home screen/home.dart';
-import '../modules/login screen/login.dart';
 import '../modules/my_account screen/My_account.dart';
 import '../modules/notifications screen/notification.dart';
 import '../modules/personal_info screen/personal_info.dart';
@@ -80,7 +79,7 @@ class _UserLayoutState extends State<UserLayout> {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       appBar: AppBar(
-        backgroundColor: Color(0xff515281),
+        backgroundColor: app_Color(),
         leading: leadingicon[2 - currentIndex],
         title: Text(
           title[2 - currentIndex],
@@ -173,7 +172,7 @@ class _UserLayoutState extends State<UserLayout> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 40.0),
-                    child: Switch(onChanged: (bool value) {  }, value: true, activeColor: color(),),
+                    child: Switch(onChanged: (bool value) {  }, value: true, activeColor: app_Color()),
                   ),
                 ],
               ),
@@ -265,7 +264,7 @@ class _UserLayoutState extends State<UserLayout> {
           showSelectedLabels: false,
           showUnselectedLabels: false,
           currentIndex: currentIndex,
-          backgroundColor: color(),
+          backgroundColor: app_Color(),
           type: BottomNavigationBarType.fixed,
           onTap: (index){
             setState(() {
