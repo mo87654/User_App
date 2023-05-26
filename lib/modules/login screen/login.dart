@@ -1,9 +1,10 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:user_app/modules/New_forgetPasswordScreen/email_Screen.dart';
-import 'package:user_app/modules/home%20screen/home.dart';
+import 'package:user_app/layout/user_layout.dart';
+import '../../shared/component/buttons.dart';
+import '../New_forgetPasswordScreen/email_Screen.dart';
 
 
 class Login extends StatefulWidget {
@@ -21,10 +22,26 @@ class _LoginState extends State<Login> {
 
   bool showpassword = true;
   bool isLoading = false;
-  final emailRegex = RegExp(r'^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$');
-  //String? selectedItem;
-  @override
-  String? selectedItem = 'User';
+  final emailRegex = RegExp(r"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$");
+
+
+
+  getCategory() async {
+    var querySnapshot = await FirebaseFirestore.instance
+        .collection('Students')
+        .where('email', isEqualTo: emailcontroller.text)
+        .get();
+    if (querySnapshot.docs.isNotEmpty) {
+      var category = querySnapshot.docs.first.data()['category'];
+      print(category);
+      print("============================");
+      return category;
+    } else {
+      return null;
+    }
+  }
+
+
 
   signin() async {
     if (formkey.currentState!.validate()) {
@@ -33,14 +50,10 @@ class _LoginState extends State<Login> {
             .signInWithEmailAndPassword(
           email: emailcontroller.text,
           password: passwordcontroller.text,);
-
-
         setState(() {
           isLoading = true;
         });
-
         return userCredential;
-
 
       } on FirebaseAuthException catch (e) {
         if (e.code == 'invalid-email') {
@@ -81,7 +94,11 @@ class _LoginState extends State<Login> {
 
     } else{return null;}
   }
-
+// @override
+//   void initState() {
+//   getCategory();
+//     super.initState();
+//   }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,7 +111,7 @@ class _LoginState extends State<Login> {
               Container(
                 padding: EdgeInsets.symmetric(vertical: 15),
                 child: Image(
-                  image: AssetImage('assets/images/bus1.jpg'),
+                  image: AssetImage('assets/images/bus.jpg'),
                   width: double.infinity,
                   height: 300,
                   fit: BoxFit.cover,
@@ -143,9 +160,7 @@ class _LoginState extends State<Login> {
                       });
                       return "please, write a valid Email ";
                     }else if (!emailRegex.hasMatch(value)) {
-                      setState(() {
-                        isLoading = false;
-                      });
+                      isLoading =false;
                       return 'Please enter a valid email address ';
                     }
 
@@ -232,7 +247,6 @@ class _LoginState extends State<Login> {
                     'Forget Password?',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Color(0xff515281),
                     ),
                   ),
                 ),
@@ -240,48 +254,52 @@ class _LoginState extends State<Login> {
               SizedBox(
                 height: 40.0,
               ),
-              Container(
-                height: 45,
-                width: double.infinity,
-                padding: const EdgeInsetsDirectional.only(start: 20, end: 20),
-                child: MaterialButton(
+              appButton(
 
-                  onPressed: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    var user =  await signin();
-                    if (user != null) {
+                text: 'Login',
+                isLoading: isLoading,
+
+                function:  () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+
+                  var user = await signin();
+                  var category = await getCategory();
+
+                    if (user != null ) {
+                      if(category == "user"){
+                        setState(() {
+                          isLoading = false;
+                          Navigator.pushReplacement(context, MaterialPageRoute(
+                            builder: (context) => UserLayout(),));
+                        });
+                      } else{
+                        setState(() {
+                          isLoading = false;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(backgroundColor: Colors.black38,
+                                padding: EdgeInsets.symmetric(vertical: 18),
+                                content: Text(" Access  rejected, you must have a user account to login ",
+                                  style: TextStyle(fontSize: 15),)),);
+                        });
+                      }
+
+                    }else{
                       setState(() {
                         isLoading = false;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(backgroundColor: Colors.black38,
+                            padding: EdgeInsets.symmetric(vertical: 18),
+                            content: Text(" please Enter a valid username and password  ",
+                              style: TextStyle(fontSize: 15),)),);
                       });
-                      Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => Homepage(),));
-
                     }
 
 
+                },
 
-                  },
-                  child:isLoading
-                      ? SpinKitCircle(
-                    color: Colors.white,
-                    size: 50.0,
-                  )
-                      :  Text(
-                    'Log in',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                    ),
-                  ),
-                  color: Color(0xff515281),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),),
-
-
-                ),
-              )
+              ),
             ],
           ),
         ),

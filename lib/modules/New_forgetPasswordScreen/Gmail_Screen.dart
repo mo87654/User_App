@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../login screen/login.dart';
-class ForgetPassword4 extends StatelessWidget {
+class gmailMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
