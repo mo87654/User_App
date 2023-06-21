@@ -182,12 +182,11 @@ class _UserLayoutState extends State<UserLayout> {
                       onTap: () {
                         Navigator.pop(context);
                       },
-
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 40.0),
-                    child: Switch(onChanged: (bool value) {  }, value: true, activeColor: color(),),
+                    child: Switch(onChanged: (bool value) {  }, value: true, activeColor: app_Color(),),
                   ),
                 ],
               ),

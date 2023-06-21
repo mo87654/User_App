@@ -1,5 +1,5 @@
 import 'dart:ui';
 
-Color color (){
+Color app_Color (){
   return Color(0xff515281);
 }

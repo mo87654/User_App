@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'forgetPassword4.dart';
+import '../New_forgetPasswordScreen/Gmail_Screen.dart';
 
 class ForgetPassword3 extends StatefulWidget {
   @override
@@ -143,7 +143,7 @@ class _ForgetPassword3State extends State<ForgetPassword3> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context)=>ForgetPassword4()
+                              builder: (context)=>gmailMessage()
                           )
                       );
                     }
