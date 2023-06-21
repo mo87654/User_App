@@ -20,15 +20,24 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     return SplashScreen(
       seconds: 5,
       navigateAfterSeconds: Login(),
-      title: const Text('',
+      title: const Text('You follow as you see',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0,letterSpacing: 1.5,
             color: Color(0xff515281)
           )),
       image: Image.asset('assets/images/wifibus.jpg'),
-      // الصورة التي ستظهر في شاشة Splash Screen
+
       backgroundColor: Colors.white,
       photoSize: 225.0 ,
-      // حجم الصورة في شاشة Splash Screen
+      /*loadingText: const Text("loading",
+          style: TextStyle(
+            fontSize: 20.0,
+        letterSpacing: 1.5,
+        color: Color(0xff515281),
+        fontWeight: FontWeight.bold,
+
+      ),
+      ),*/
+
       loaderColor: Color(0xff515281), // لون دائرة التحميل في شاشة Splash Screen4
     );
   }

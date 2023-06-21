@@ -101,10 +101,12 @@ class _UserLayoutState extends State<UserLayout> {
       drawer:   SafeArea(
         child: Drawer(
           shadowColor: Color(0xff4d6aaa),
-       backgroundColor: Colors.white70,
+       backgroundColor: Colors.white,
           child: Column(
+
             children: [
               ListTile(
+
                 leading: const Icon(Icons.person),
                 title: FutureBuilder(
                 future: getuserinfo(),
