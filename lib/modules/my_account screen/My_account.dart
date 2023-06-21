@@ -179,12 +179,14 @@ class _MyAccountState extends State<MyAccount> {
           Padding(
             padding: const EdgeInsets.only(top: 25, left: 25, right: 25),
             child: SingleChildScrollView(
+
+
               child: Column(
 
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: 30.0),
+                      padding: EdgeInsets.only(top: 25.0),
                       child:FutureBuilder(
                         future: getuserinfo(),
                         builder: (_, AsyncSnapshot snapshot) {
@@ -210,7 +212,7 @@ class _MyAccountState extends State<MyAccount> {
                             style: TextStyle
                               (
                               fontWeight: FontWeight.bold,
-                              fontSize: 22,
+                              fontSize: 18,
                             ),
 
                           );
@@ -220,7 +222,7 @@ class _MyAccountState extends State<MyAccount> {
                     ),
 
                     Padding(
-                      padding: const EdgeInsets.only(top: 30),
+                      padding: const EdgeInsets.only(top: 25),
                       child: FutureBuilder(
                         future: getuserinfo(),
                         builder: (_, AsyncSnapshot snapshot) {
@@ -246,7 +248,7 @@ class _MyAccountState extends State<MyAccount> {
                             style: TextStyle
                               (
                               fontWeight: FontWeight.bold,
-                              fontSize: 22,
+                              fontSize: 18,
                             ),
 
                           );
@@ -256,7 +258,7 @@ class _MyAccountState extends State<MyAccount> {
 
 
                     Padding(
-                      padding: const EdgeInsets.only(top:30.0),
+                      padding: const EdgeInsets.only(top:25.0),
                       child: FutureBuilder(
                         future: getuserinfo(),
                         builder: (_, AsyncSnapshot snapshot) {
@@ -282,7 +284,7 @@ class _MyAccountState extends State<MyAccount> {
                             style: TextStyle
                               (
                               fontWeight: FontWeight.bold,
-                              fontSize: 22,
+                              fontSize: 18,
                             ),
 
                           );
@@ -291,7 +293,7 @@ class _MyAccountState extends State<MyAccount> {
                     ),
 
                     Padding(
-                      padding: const EdgeInsets.only(top:30.0),
+                      padding: const EdgeInsets.only(top:25.0),
                       child: FutureBuilder(
                         future: getuserinfo(),
                         builder: (_, AsyncSnapshot snapshot) {
@@ -317,7 +319,7 @@ class _MyAccountState extends State<MyAccount> {
                             style: TextStyle
                               (
                               fontWeight: FontWeight.bold,
-                              fontSize: 22,
+                              fontSize: 18,
                             ),
 
                           );
