@@ -101,6 +101,7 @@ class _HelpPageState extends State<HelpPage> {
               ),
               SizedBox(height: 220.0),
               appButton(
+
                 isLoading: isLoading,
                 text: 'Save',
                 function: ()async{
@@ -113,12 +114,17 @@ class _HelpPageState extends State<HelpPage> {
                       'ProblemDescription' :_controllerProblem.text
                     };
                     FirebaseFirestore.instance.collection('problems').add(dataToSave);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(backgroundColor: Colors.black38,
+                          padding: EdgeInsets.symmetric(vertical: 18),
+                          content: Text("  your problem has been sent succesfully ",style: TextStyle(fontSize: 20),)),);
+
 
                     setState(() {
                       isLoading = false;
                     });
 
-                    Navigator.pop(context);
+                    //Navigator.pop(context);
                   }
                 },
               ),
