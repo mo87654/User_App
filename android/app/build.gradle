@@ -76,6 +76,4 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-auth'
     implementation 'androidx.browser:browser:1.5.0'
-    implementation 'com.google.firebase:firebase-appcheck:16.1.2'
-    implementation 'com.google.firebase:firebase-appcheck-playintegrity:16.1.2'
 }

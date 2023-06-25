@@ -2,11 +2,12 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:location/location.dart';
 import 'package:user_app/modules/AboutUs%20Screen/AboutUs.dart';
 import '../modules/change_password screen/change_password.dart';
 import '../modules/help screen/help_screen.dart';
 import '../modules/home screen/home.dart';
-import '../modules/login screen/login.dart';
 import '../modules/my_account screen/My_account.dart';
 import '../modules/notifications screen/notification.dart';
 import '../modules/personal_info screen/personal_info.dart';
@@ -30,11 +31,40 @@ Future<Object> getuserinfo() async {
 
 }
 
+Future<void> checkLocationService ()async{
+
+  Location location = new Location();
+
+
+  bool _serviceEnabled;
+  PermissionStatus _permissionGranted;
+   //LocationData _locationData;
+
+  _serviceEnabled = await location.serviceEnabled();
+  if (!_serviceEnabled) {
+    _serviceEnabled = await location.requestService();
+    if (!_serviceEnabled) {
+      SystemNavigator.pop();
+      print("no location service");
+
+    }
+  }
+
+  _permissionGranted = await location.hasPermission();
+  if (_permissionGranted == PermissionStatus.denied) {
+    _permissionGranted = await location.requestPermission();
+    if (_permissionGranted != PermissionStatus.granted) {
+      SystemNavigator.pop();
+      print("no location permission");
+    }
+  }
+}
+
 
 class _UserLayoutState extends State<UserLayout> {
   var currentIndex = 2;
   List<Widget> userScreens =[
-    Homepage(),
+    MapScreen1(),
     NotificationPage(),
     MyAccount(),
   ];
@@ -56,8 +86,8 @@ class _UserLayoutState extends State<UserLayout> {
 
   @override
   void initState() {
-
     super.initState();
+    checkLocationService();
     initUser();
   }
   initUser() async {
