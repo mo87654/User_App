@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,7 +49,7 @@ class _NotificationPageState extends State<NotificationPage> {
 
   }*/
 
-  @override
+
     bool isButtonVisible = true;
     bool isButtonVisible1 = true;
     bool isButtonVisible2 = true;
@@ -307,7 +305,6 @@ showNotification() async {
 
 
   Future onSelectNotification(String payload) async {
-    // handle notification tap here
   }
 
 
