@@ -1,10 +1,17 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:user_app/modules/login%20screen/login.dart';
 
-class SignOutMessage extends StatelessWidget {
+class SignOutMessage extends StatefulWidget {
+
+  SignOutMessage({super.key});
+
+  @override
+  State<SignOutMessage> createState() => _SignOutMessageState();
+}
+
+class _SignOutMessageState extends State<SignOutMessage> {
 FirebaseAuth auth = FirebaseAuth.instance;
 
   @override

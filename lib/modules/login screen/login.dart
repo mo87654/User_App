@@ -163,6 +163,7 @@ class _LoginState extends State<Login> {
                       isLoading =false;
                       return 'Please enter a valid email address ';
                     }
+                    return null;
 
                   },
                 ),
