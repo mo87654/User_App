@@ -8,6 +8,7 @@ import 'package:splashscreen/splashscreen.dart';
 import 'package:user_app/modules/home%20screen/home.dart';
 import 'layout/user_layout.dart';
 import 'modules/login screen/login.dart';
+import 'modules/notifications screen/showNotifications.dart';
 
 
 bool isLogin = false;
