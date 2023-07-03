@@ -6,7 +6,6 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'layout/user_layout.dart';
 import 'modules/login screen/login.dart';
-import 'modules/notifications screen/showNotifications.dart';
 
 
 bool isLogin = false;

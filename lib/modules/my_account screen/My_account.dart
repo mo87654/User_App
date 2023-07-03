@@ -49,7 +49,7 @@ class _MyAccountState extends State<MyAccount> {
   }
 
   void takePhoto(ImageSource source) async {
-    final pickedFile = await picker.getImage(source: source);
+    final pickedFile = await picker.pickImage(source: source);
     if (pickedFile != null) {
       final appDir = await getApplicationDocumentsDirectory();
       final fileName = basename(pickedFile.path);
