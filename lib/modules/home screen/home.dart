@@ -151,7 +151,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
 class MapScreen1 extends StatefulWidget {
   @override
   _MapScreen1State createState() => _MapScreen1State();
@@ -160,7 +161,7 @@ class MapScreen1 extends StatefulWidget {
 class _MapScreen1State extends State<MapScreen1> {
   final driverBusNumber =  FirebaseFirestore.instance.collection("Drivers").get();
 
-  Color circleAvatarColor = Color(0xFF91CC04);
+  Color circleAvatarColor = Color(0xFF9FCE9F);
   String text = "At Home";
   Color textColor = Color(0xFF91CC04);
   String imageAsset = 'assets/images/At home.png';
@@ -172,7 +173,10 @@ class _MapScreen1State extends State<MapScreen1> {
     final user = FirebaseAuth.instance.currentUser;
     return user!.uid;
   }
-
+  Future<String?> loadimage() async {
+    SharedPreferences saveimage = await SharedPreferences.getInstance();
+    return saveimage.getString("imagepath");
+  }
   Future<String?> getStudBusNumber() async {
     final userId = getCurrentUserId();
     final studentSnapshot = await FirebaseFirestore.instance
@@ -355,14 +359,22 @@ class _MapScreen1State extends State<MapScreen1> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CircleAvatar(
-                        backgroundColor: circleAvatarColor,
+                      FutureBuilder<String?>(
+                  future: loadimage(),
+                  builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+                    if (snapshot.hasData && snapshot.data != null) {
+                      return CircleAvatar(
                         radius: 60,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 45,
-                        ),
-                      ),
+                        backgroundImage: FileImage(File(snapshot.data!)),
+                      );
+                    } else {
+                      return CircleAvatar(
+                        radius: 60,
+                        child: Icon(Icons.person),
+                      );
+                    }
+                  },
+                ),
                       SizedBox(width: 25),
                       Text(
                         text,
