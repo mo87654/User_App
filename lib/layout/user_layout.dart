@@ -2,18 +2,20 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user_app/modules/AboutUs%20Screen/AboutUs.dart';
+import '../home 2.dart';
 import '../modules/change_password screen/change_password.dart';
 import '../modules/help screen/help_screen.dart';
 import '../modules/home screen/home.dart';
+import '../modules/login screen/login.dart';
 import '../modules/my_account screen/My_account.dart';
 import '../modules/notifications screen/notification.dart';
 import '../modules/personal_info screen/personal_info.dart';
 import '../shared/component/SignoutMessage.dart';
 import '../shared/component/colors.dart';
 import '../shared/component/components.dart';
+import 'dart:io';
 
 class UserLayout extends StatefulWidget {
   const UserLayout({Key? key}) : super(key: key);
@@ -30,41 +32,16 @@ Future<Object> getuserinfo() async {
   return result.data()??['uid'];
 
 }
-
-Future<void> checkLocationService ()async{
-
-  Location location = new Location();
-
-
-  bool _serviceEnabled;
-  PermissionStatus _permissionGranted;
-   //LocationData _locationData;
-
-  _serviceEnabled = await location.serviceEnabled();
-  if (!_serviceEnabled) {
-    _serviceEnabled = await location.requestService();
-    if (!_serviceEnabled) {
-      SystemNavigator.pop();
-      print("no location service");
-
-    }
-  }
-
-  _permissionGranted = await location.hasPermission();
-  if (_permissionGranted == PermissionStatus.denied) {
-    _permissionGranted = await location.requestPermission();
-    if (_permissionGranted != PermissionStatus.granted) {
-      SystemNavigator.pop();
-      print("no location permission");
-    }
-  }
+Future<String?> loadimage() async {
+  SharedPreferences saveimage = await SharedPreferences.getInstance();
+  return saveimage.getString("imagepath");
 }
 
 
 class _UserLayoutState extends State<UserLayout> {
   var currentIndex = 2;
   List<Widget> userScreens =[
-    MapScreen1(),
+    Homepage(),
     NotificationPage(),
     MyAccount(),
   ];
@@ -86,9 +63,10 @@ class _UserLayoutState extends State<UserLayout> {
 
   @override
   void initState() {
+
     super.initState();
-    checkLocationService();
     initUser();
+    loadimage();
   }
   initUser() async {
     getuserinfo();
@@ -118,7 +96,7 @@ class _UserLayoutState extends State<UserLayout> {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       appBar: AppBar(
-        
+        elevation: 0,
         backgroundColor: Color(0xff515281),
         leading: leadingicon[2 - _currentIndex],
         title: Text(
@@ -137,7 +115,23 @@ class _UserLayoutState extends State<UserLayout> {
             children: [
               ListTile(
 
-                leading: const Icon(Icons.person),
+                leading:FutureBuilder<String?>(
+              future: loadimage(),
+          builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+            if (snapshot.hasData && snapshot.data != null) {
+              return CircleAvatar(
+                radius: 30,
+                backgroundImage: FileImage(File(snapshot.data!)),
+              );
+            } else {
+              return CircleAvatar(
+                radius: 50,
+                child: Icon(Icons.person),
+              );
+            }
+          },
+        ),
+
                 title: FutureBuilder(
                 future: getuserinfo(),
                builder: (_ , AsyncSnapshot snapshot) {
@@ -146,7 +140,7 @@ class _UserLayoutState extends State<UserLayout> {
                  }
                  return Text(snapshot.data['name'].toString(),
                    style: TextStyle(
-                     fontSize: 17,
+                     fontSize: 15,
                      fontWeight: FontWeight.bold,
 
                    ),
@@ -182,7 +176,7 @@ class _UserLayoutState extends State<UserLayout> {
               ),
               ListTile(
                 leading: const Icon(Icons.perm_contact_cal_outlined),
-                title: const Text(' Edit Profile ',
+                title: const Text(' Profile Details ',
                   style: TextStyle(
                       fontSize: 17
                   ),

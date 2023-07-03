@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart';
 
 class MyAccount extends StatefulWidget {
   const MyAccount({Key? key}) : super(key: key);
@@ -46,7 +48,30 @@ class _MyAccountState extends State<MyAccount> {
     });
   }
 
-
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await picker.pickImage(source: source);
+    if (pickedFile != null) {
+      final appDir = await getApplicationDocumentsDirectory();
+      final fileName = basename(pickedFile.path);
+      final savedImage = await File(pickedFile.path).copy('${appDir.path}/$fileName');
+      setState(() {
+        _imagepath = savedImage.path;
+        print(_imagepath);
+      });
+      savephoto(_imagepath!); // حفظ الصورة المحددة
+      final newImage = File(_imagepath!);
+      final imageBytes = newImage.readAsBytesSync();
+      final image64 = base64Encode(imageBytes);
+      print(image64);
+    }
+  }
+  void deletePhoto() async {
+    setState(() {
+      _imagepath = null;
+    });
+    SharedPreferences saveimage = await SharedPreferences.getInstance();
+    saveimage.remove("imagepath");
+  }
   String? _imagepath;
   final ImagePicker picker = ImagePicker();
   Color white = const Color.fromRGBO(254, 254, 254, 1.0);
@@ -54,13 +79,13 @@ class _MyAccountState extends State<MyAccount> {
   final nameController = TextEditingController();
   final gradController = TextEditingController();
   final addressController = TextEditingController();
-
+  final busController = TextEditingController();
   @override
   void initState() {
 
     super.initState();
     initUser();
-    loadimage();
+   // loadimage();
   }
   initUser() async {
 
@@ -70,7 +95,11 @@ class _MyAccountState extends State<MyAccount> {
     });
   }
 
-
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    loadimage();
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -124,11 +153,16 @@ class _MyAccountState extends State<MyAccount> {
                       children:<Widget>[
                         _imagepath != null?
                         CircleAvatar(backgroundImage: FileImage(File(_imagepath!)),radius: 80,)
-                   :    CircleAvatar(
-                         radius: 64,
-                         backgroundImage: _imageFile == null ?
-                         AssetImage("assets/images/User3.jpg")
-                            : FileImage(File(_imageFile!.path)) as ImageProvider),
+                   :    GestureDetector(
+                          onTap: () {
+                            takePhoto(ImageSource.gallery);
+                          },
+                     child: CircleAvatar(
+                           radius: 64,
+                           backgroundImage: _imageFile == null ?
+                           AssetImage("assets/images/User3.jpg")
+                              : FileImage(File(_imageFile!.path)) as ImageProvider),
+                   ),
 
 
                     CircleAvatar(
@@ -136,10 +170,12 @@ class _MyAccountState extends State<MyAccount> {
                       radius: 19,
                       child: InkWell(
                         onTap: () {
+
                           setState(() {
                             showModalBottomSheet<void>(
                               context: context,
                               builder: (context) => bottomSheet(),
+
                             );
                           });
                         },
@@ -152,22 +188,7 @@ class _MyAccountState extends State<MyAccount> {
                   ],
                 ),
               ),
-              OutlinedButton.icon(
-                icon: const Icon(Icons.save_as_outlined,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  savephoto(_imageFile?.path);
-                  loadimage();
 
-                },
-                label: const Text("save",
-                  style: TextStyle(
-                    color: Colors.black,
-
-                  ),
-                ),
-              ),
             ],
 
           ),
@@ -326,6 +347,41 @@ class _MyAccountState extends State<MyAccount> {
                         },
                       ),
                     ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 25.0),
+                      child: FutureBuilder(
+                        future: getuserinfo(),
+                        builder: (_, AsyncSnapshot snapshot) {
+                          if(snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+
+                          busController.text = snapshot.data['Bus_number'].toString();
+                          return TextFormField(
+
+                            controller: busController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  width: 2.0,
+                                ),
+                              ),
+                              labelText: 'Bus_number',
+                            ),
+                            readOnly: true,
+                            style: TextStyle
+                              (
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+
+                          );
+                        },
+                      ),
+                    ),
                   ]
 
               ),
@@ -351,7 +407,7 @@ class _MyAccountState extends State<MyAccount> {
     return Container(
       color: const Color.fromRGBO(159, 148, 171, 1.0),
       height: 100,
-      width: MediaQuery.of(context).size.width,
+     // width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 20,
@@ -402,6 +458,21 @@ class _MyAccountState extends State<MyAccount> {
                   ),
 
                 ),
+                OutlinedButton.icon(
+
+                  icon: const Icon(Icons.delete,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    deletePhoto();
+                  },
+                  label: const Text("delete",
+                    style: TextStyle(
+                        color: Colors.black
+                    ),
+                  ),
+
+                ),
               ],
             ),
           )
@@ -410,30 +481,9 @@ class _MyAccountState extends State<MyAccount> {
     );
   }
 
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await picker.getImage(
-      source: source,
-    );
-    setState(() {
-      _imageFile = pickedFile ?? '' as PickedFile;
-      print(_imageFile?.path);
-    });
-  }
 
-  pickPicture() async {
-    _imageFile = await picker.getImage(
-        source: ImageSource.gallery, maxHeight: 200, maxWidth: 200);
 
-    print(_imageFile);
 
-    if(_imageFile != null) {
-
-      final File newImage = File(_imageFile!.path);
-
-      List<int> imageBytes = newImage.readAsBytesSync();
-      image64 = base64Encode(imageBytes);
-    }
-  }
 }
 
 class HeaderCurvedContainer extends CustomPainter {
