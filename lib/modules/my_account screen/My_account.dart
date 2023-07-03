@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path/path.dart';
 
 class MyAccount extends StatefulWidget {
   const MyAccount({Key? key}) : super(key: key);
@@ -21,15 +23,15 @@ class _MyAccountState extends State<MyAccount> {
 
   final user =  FirebaseAuth.instance.currentUser!;
   // final User =  FirebaseFirestore.instance
-    //   .collection("users")
-     //  .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-      // .snapshots();
+  //   .collection("users")
+  //  .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+  // .snapshots();
 
   Future<Object> getuserinfo() async {
     final CollectionReference users = FirebaseFirestore.instance.collection('Students');
-     final String uid = user.uid;
-     final result = await  users.doc(uid).get();
-     return result.data()??['name'];
+    final String uid = user.uid;
+    final result = await  users.doc(uid).get();
+    return result.data()??['name'];
 
   }
   Future<void> savephoto(Path) async {
@@ -46,7 +48,30 @@ class _MyAccountState extends State<MyAccount> {
     });
   }
 
-
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await picker.pickImage(source: source);
+    if (pickedFile != null) {
+      final appDir = await getApplicationDocumentsDirectory();
+      final fileName = basename(pickedFile.path);
+      final savedImage = await File(pickedFile.path).copy('${appDir.path}/$fileName');
+      setState(() {
+        _imagepath = savedImage.path;
+        print(_imagepath);
+      });
+      savephoto(_imagepath!); // حفظ الصورة المحددة
+      final newImage = File(_imagepath!);
+      final imageBytes = newImage.readAsBytesSync();
+      final image64 = base64Encode(imageBytes);
+      print(image64);
+    }
+  }
+  void deletePhoto() async {
+    setState(() {
+      _imagepath = null;
+    });
+    SharedPreferences saveimage = await SharedPreferences.getInstance();
+    saveimage.remove("imagepath");
+  }
   String? _imagepath;
   final ImagePicker picker = ImagePicker();
   Color white = const Color.fromRGBO(254, 254, 254, 1.0);
@@ -54,13 +79,13 @@ class _MyAccountState extends State<MyAccount> {
   final nameController = TextEditingController();
   final gradController = TextEditingController();
   final addressController = TextEditingController();
-
+  final busController = TextEditingController();
   @override
   void initState() {
 
     super.initState();
     initUser();
-    loadimage();
+    // loadimage();
   }
   initUser() async {
 
@@ -70,273 +95,304 @@ class _MyAccountState extends State<MyAccount> {
     });
   }
 
-
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    loadimage();
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
 
-            children: [
-              Container(
-               height: 260 ,
-                width: double.infinity,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  alignment: AlignmentDirectional.bottomCenter,
+          children: [
+            Container(
+              height: 260 ,
+              width: double.infinity,
+              child: Stack(
+                clipBehavior: Clip.none,
+                alignment: AlignmentDirectional.bottomCenter,
 
-                  children:<Widget> [
-                    Align(
+                children:<Widget> [
+                  Align(
 
 
-                      alignment: AlignmentDirectional.topStart,
-                      child: CustomPaint(
-                        painter: HeaderCurvedContainer(),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height,
+                    alignment: AlignmentDirectional.topStart,
+                    child: CustomPaint(
+                      painter: HeaderCurvedContainer(),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
 
-                          child: const Align(
-                            alignment: AlignmentDirectional.topCenter,
-                            child: Padding(
-                              padding: EdgeInsets.all(50),
-                              child: Text(
-                                "",
-                                style: TextStyle(
-                                  fontSize: 40,
-                                  letterSpacing: 1.5,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                        child: const Align(
+                          alignment: AlignmentDirectional.topCenter,
+                          child: Padding(
+                            padding: EdgeInsets.all(50),
+                            child: Text(
+                              "",
+                              style: TextStyle(
+                                fontSize: 40,
+                                letterSpacing: 1.5,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
                         ),
                       ),
-
                     ),
 
-                    Stack(
-                        alignment: AlignmentDirectional.bottomEnd,
-                     clipBehavior: Clip.none,
+                  ),
+
+                  Stack(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      clipBehavior: Clip.none,
                       children:<Widget>[
                         _imagepath != null?
                         CircleAvatar(backgroundImage: FileImage(File(_imagepath!)),radius: 80,)
-                   :    CircleAvatar(
-                         radius: 64,
-                         backgroundImage: _imageFile == null ?
-                         AssetImage("assets/images/User3.jpg")
-                            : FileImage(File(_imageFile!.path)) as ImageProvider),
+                            :    GestureDetector(
+                          onTap: () {
+                            takePhoto(ImageSource.gallery);
+                          },
+                          child: CircleAvatar(
+                              radius: 64,
+                              backgroundImage: _imageFile == null ?
+                              AssetImage("assets/images/User3.jpg")
+                                  : FileImage(File(_imageFile!.path)) as ImageProvider),
+                        ),
 
 
-                    CircleAvatar(
-                      backgroundColor:  const Color(0xff515281),
-                      radius: 19,
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            showModalBottomSheet<void>(
-                              context: context,
-                              builder: (context) => bottomSheet(),
-                            );
-                          });
-                        },
-                        child: Icon(Icons.camera_alt_outlined, color: white),
-                      ),
-                    ),
-          ]
+                        CircleAvatar(
+                          backgroundColor:  const Color(0xff515281),
+                          radius: 19,
+                          child: InkWell(
+                            onTap: () {
 
-          ),
-                  ],
-                ),
-              ),
-              OutlinedButton.icon(
-                icon: const Icon(Icons.save_as_outlined,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  savephoto(_imageFile?.path);
-                  loadimage();
+                              setState(() {
+                                showModalBottomSheet<void>(
+                                  context: context,
+                                  builder: (context) => bottomSheet(),
 
-                },
-                label: const Text("save",
-                  style: TextStyle(
-                    color: Colors.black,
+                                );
+                              });
+                            },
+                            child: Icon(Icons.camera_alt_outlined, color: white),
+                          ),
+                        ),
+                      ]
 
                   ),
-                ),
-              ),
-            ],
-
-          ),
-
-
-
-
-
-          Padding(
-            padding: const EdgeInsets.only(top: 25, left: 25, right: 25),
-            child: SingleChildScrollView(
-
-
-              child: Column(
-
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 25.0),
-                      child:FutureBuilder(
-                        future: getuserinfo(),
-                        builder: (_, AsyncSnapshot snapshot) {
-                          if(snapshot.connectionState == ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
-                          }
-
-                          nameController.text = snapshot.data['name'].toString();
-                          return TextFormField(
-
-                            controller: nameController,
-                            enabled: false,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  width: 1.0,
-                                ),
-                              ),
-                              labelText: 'your name',
-                            ),
-                            readOnly: true,
-                            style: TextStyle
-                              (
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-
-                          );
-                        },
-                      ),
-
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.only(top: 25),
-                      child: FutureBuilder(
-                        future: getuserinfo(),
-                        builder: (_, AsyncSnapshot snapshot) {
-                          if(snapshot.connectionState == ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
-                          }
-                          // تعيين النص المستلم من قاعدة البيانات في حقل Textformfield
-                          emailController.text = snapshot.data['email'].toString();
-                          return TextFormField(
-
-                            controller: emailController,
-                            enabled: false,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  width: 2.0,
-                                ),
-                              ),
-                              labelText: 'your email',
-                            ),
-                            readOnly: true,
-                            style: TextStyle
-                              (
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-
-                          );
-                        },
-                      ),
-                    ),
-
-
-                    Padding(
-                      padding: const EdgeInsets.only(top:25.0),
-                      child: FutureBuilder(
-                        future: getuserinfo(),
-                        builder: (_, AsyncSnapshot snapshot) {
-                          if(snapshot.connectionState == ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
-                          }
-
-                          gradController.text = snapshot.data['grad'].toString();
-                          return TextFormField(
-
-                            controller: gradController,
-                            enabled: false,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  width: 2.0,
-                                ),
-                              ),
-                              labelText: 'your level',
-                            ),
-                            readOnly: true,
-                            style: TextStyle
-                              (
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-
-                          );
-                        },
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.only(top:25.0),
-                      child: FutureBuilder(
-                        future: getuserinfo(),
-                        builder: (_, AsyncSnapshot snapshot) {
-                          if(snapshot.connectionState == ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
-                          }
-                          // تعيين النص المستلم من قاعدة البيانات في حقل Textformfield
-                          addressController.text = snapshot.data['address'].toString();
-                          return TextFormField(
-
-                            controller: addressController,
-                            enabled: false,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: BorderSide(
-                                  width: 2.0,
-                                ),
-                              ),
-                              labelText: 'your address',
-                            ),
-                            readOnly: true,
-                            style: TextStyle
-                              (
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-
-                          );
-                        },
-                      ),
-                    ),
-                  ]
-
+                ],
               ),
             ),
+
+          ],
+
+        ),
+
+
+
+
+
+        Padding(
+          padding: const EdgeInsets.only(top: 25, left: 25, right: 25),
+          child: SingleChildScrollView(
+
+
+            child: Column(
+
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 25.0),
+                    child:FutureBuilder(
+                      future: getuserinfo(),
+                      builder: (_, AsyncSnapshot snapshot) {
+                        if(snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+
+                        nameController.text = snapshot.data['name'].toString();
+                        return TextFormField(
+
+                          controller: nameController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                width: 1.0,
+                              ),
+                            ),
+                            labelText: 'your name',
+                          ),
+                          readOnly: true,
+                          style: TextStyle
+                            (
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+
+                        );
+                      },
+                    ),
+
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(top: 25),
+                    child: FutureBuilder(
+                      future: getuserinfo(),
+                      builder: (_, AsyncSnapshot snapshot) {
+                        if(snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        // تعيين النص المستلم من قاعدة البيانات في حقل Textformfield
+                        emailController.text = snapshot.data['email'].toString();
+                        return TextFormField(
+
+                          controller: emailController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                width: 2.0,
+                              ),
+                            ),
+                            labelText: 'your email',
+                          ),
+                          readOnly: true,
+                          style: TextStyle
+                            (
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+
+                        );
+                      },
+                    ),
+                  ),
+
+
+                  Padding(
+                    padding: const EdgeInsets.only(top:25.0),
+                    child: FutureBuilder(
+                      future: getuserinfo(),
+                      builder: (_, AsyncSnapshot snapshot) {
+                        if(snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+
+                        gradController.text = snapshot.data['grad'].toString();
+                        return TextFormField(
+
+                          controller: gradController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                width: 2.0,
+                              ),
+                            ),
+                            labelText: 'your level',
+                          ),
+                          readOnly: true,
+                          style: TextStyle
+                            (
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+
+                        );
+                      },
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(top:25.0),
+                    child: FutureBuilder(
+                      future: getuserinfo(),
+                      builder: (_, AsyncSnapshot snapshot) {
+                        if(snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        // تعيين النص المستلم من قاعدة البيانات في حقل Textformfield
+                        addressController.text = snapshot.data['address'].toString();
+                        return TextFormField(
+
+                          controller: addressController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                width: 2.0,
+                              ),
+                            ),
+                            labelText: 'your address',
+                          ),
+                          readOnly: true,
+                          style: TextStyle
+                            (
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+
+                        );
+                      },
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(top: 25.0),
+                    child: FutureBuilder(
+                      future: getuserinfo(),
+                      builder: (_, AsyncSnapshot snapshot) {
+                        if(snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+
+                        busController.text = snapshot.data['Bus_number'].toString();
+                        return TextFormField(
+
+                          controller: busController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                width: 2.0,
+                              ),
+                            ),
+                            labelText: 'Bus_number',
+                          ),
+                          readOnly: true,
+                          style: TextStyle
+                            (
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+
+                        );
+                      },
+                    ),
+                  ),
+                ]
+
+            ),
           ),
+        ),
 
 
 
-        ],
+      ],
 
-      );
+    );
 
 
 
@@ -351,7 +407,7 @@ class _MyAccountState extends State<MyAccount> {
     return Container(
       color: const Color.fromRGBO(159, 148, 171, 1.0),
       height: 100,
-      width: MediaQuery.of(context).size.width,
+      // width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 20,
@@ -402,6 +458,21 @@ class _MyAccountState extends State<MyAccount> {
                   ),
 
                 ),
+                OutlinedButton.icon(
+
+                  icon: const Icon(Icons.delete,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    deletePhoto();
+                  },
+                  label: const Text("delete",
+                    style: TextStyle(
+                        color: Colors.black
+                    ),
+                  ),
+
+                ),
               ],
             ),
           )
@@ -410,30 +481,9 @@ class _MyAccountState extends State<MyAccount> {
     );
   }
 
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await picker.getImage(
-      source: source,
-    );
-    setState(() {
-      _imageFile = pickedFile ?? '' as PickedFile;
-      print(_imageFile?.path);
-    });
-  }
 
-  pickPicture() async {
-    _imageFile = await picker.getImage(
-        source: ImageSource.gallery, maxHeight: 200, maxWidth: 200);
 
-    print(_imageFile);
 
-    if(_imageFile != null) {
-
-      final File newImage = File(_imageFile!.path);
-
-      List<int> imageBytes = newImage.readAsBytesSync();
-      image64 = base64Encode(imageBytes);
-    }
-  }
 }
 
 class HeaderCurvedContainer extends CustomPainter {

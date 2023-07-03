@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user_app/modules/AboutUs%20Screen/AboutUs.dart';
 import '../modules/change_password screen/change_password.dart';
 import '../modules/help screen/help_screen.dart';
@@ -14,7 +15,7 @@ import '../modules/personal_info screen/personal_info.dart';
 import '../shared/component/SignoutMessage.dart';
 import '../shared/component/colors.dart';
 import '../shared/component/components.dart';
-
+import 'dart:io';
 class UserLayout extends StatefulWidget {
   const UserLayout({Key? key}) : super(key: key);
 
@@ -60,7 +61,10 @@ Future<void> checkLocationService ()async{
   }
 }
 
-
+Future<String?> loadimage() async {
+  SharedPreferences saveimage = await SharedPreferences.getInstance();
+  return saveimage.getString("imagepath");
+}
 class _UserLayoutState extends State<UserLayout> {
   var currentIndex = 2;
   List<Widget> userScreens =[
@@ -137,7 +141,22 @@ class _UserLayoutState extends State<UserLayout> {
             children: [
               ListTile(
 
-                leading: const Icon(Icons.person),
+                leading:FutureBuilder<String?>(
+              future: loadimage(),
+          builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+            if (snapshot.hasData && snapshot.data != null) {
+              return CircleAvatar(
+                radius: 30,
+                backgroundImage: FileImage(File(snapshot.data!)),
+              );
+            } else {
+              return CircleAvatar(
+                radius: 50,
+                child: Icon(Icons.person),
+              );
+            }
+          },
+        ),
                 title: FutureBuilder(
                 future: getuserinfo(),
                builder: (_ , AsyncSnapshot snapshot) {

@@ -18,36 +18,126 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage> {
 
- /* Future<void> _getSavedNotifications() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  late SharedPreferences prefs;
+  List<String> Notifications = [];
+  bool notificationDisplayed = false;
+
+
+  void initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
     setState(() {
       Notifications = prefs.getStringList('notifications') ?? [];
     });
-  }*/
+  }
 
-
-/*
-  Future<void> _addNotification(String notification) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      Notifications.add(notification);
-      prefs.setStringList('notifications', Notifications);
-    });
-  }*/
   @override
   void initState() {
     super.initState();
-   // _getSavedNotifications();
+    startTimer();
+    initPrefs();
   }
 
- /* @override
-  Future<void> dispose() async {
-    super.dispose();
-    // Clean up the notifications list
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('notifications');
 
-  }*/
+  showNotification() async {
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+    const InitializationSettings initializationSettings =
+    InitializationSettings(
+      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+    );
+
+    var play = 'Hello dear, '
+        'Your child is now at home';
+    //await flutterLocalNotificationsPlugin.cancelAll();
+    if (!Notifications.contains(play)) {
+      await flutterLocalNotificationsPlugin.show(
+          0,
+          'Hello dear',
+          'Your child is now at home99999999',
+          platformChannelSpecifics,
+          payload: 'item x');
+
+      setState(() {
+        Notifications.add(play);
+      });
+
+      await prefs.setStringList('notifications', Notifications);
+
+    }
+
+  }
+
+  showSecondNotification() async {
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+    const InitializationSettings initializationSettings =
+    InitializationSettings(
+      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+    );
+
+    var play = 'Hello dear, '
+        'Your child is now at school';
+    //await flutterLocalNotificationsPlugin.cancelAll();
+    if (!Notifications.contains(play)) {
+      await flutterLocalNotificationsPlugin.show(
+          0,
+          'Hello dear',
+          'Your child is now at school',
+          platformChannelSpecifics,
+          payload: 'item x');
+
+      setState(() {
+        Notifications.add(play);
+      });
+
+      await prefs.setStringList('notifications', Notifications);
+
+    }
+
+  }
+  showThirdNotification() async {
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+    const InitializationSettings initializationSettings =
+    InitializationSettings(
+      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+    );
+
+    var play = 'Hello dear, '
+        'Your child is now in bus';
+    //await flutterLocalNotificationsPlugin.cancelAll();
+    if (!Notifications.contains(play)) {
+      await flutterLocalNotificationsPlugin.show(
+          0,
+          'Hello dear',
+          'Your child is now in bus',
+          platformChannelSpecifics,
+          payload: 'item x');
+
+      setState(() {
+        Notifications.add(play);
+      });
+
+      await prefs.setStringList('notifications', Notifications);
+
+    }
+
+  }
 
 
     bool isButtonVisible = true;
@@ -101,53 +191,65 @@ class _NotificationPageState extends State<NotificationPage> {
       });
     }
 
-
-    Timer mytimer = Timer.periodic(const Duration(seconds: 20), (timer) async {
-      //code to run on every 5 seconds
-
-
-      CollectionReference users = FirebaseFirestore.instance.collection(
-          'Students');
+  void startTimer() {
+    Timer.periodic(const Duration(seconds: 15), (timer) async {
+//code to run on every 20 seconds
+      CollectionReference users =
+      FirebaseFirestore.instance.collection('Students');
       final user = FirebaseAuth.instance.currentUser!;
       final String uid = user.uid;
-      var mac = await users.doc(uid).get().then((value) {
-        return value.get('MAC-address');
-        //print('////////////////////////////////////////////');
-        // print(value.get('MAC-address'));
-        // print('////////////////////////////////////////////');
-      }
-      );
-
-      final QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('mac addresses').get();
-      final List<String> fieldValues = [];
-      for (final QueryDocumentSnapshot documentSnapshot in snapshot.docs) {
-        final String fieldValue = documentSnapshot.get('mac');
-        fieldValues.add(fieldValue);
-
-
-        bool macFound = false;
-       // bool notificationShown = false;
-        for (var fieldValue in fieldValues) {
-          if (fieldValue == mac) {
-
-            macFound = true;
-          }
-        }
-        if (macFound) {
+      var state = await users.doc(uid).get().then((value) {
+        return value.get('state');
+      });
+      if (state == "0") {
+        setState(() {}); // إعادة بناء واجهة المستخدم
+        Future.delayed(Duration(milliseconds: 100), () {
           showNotification();
-          print('$mac exists in the list!');
-        } else {
-          print('$mac does not exist in the list.');
-
-        }
+        });
+        print("Your child is now at home");
+      } else if (state == "1") {
+        showSecondNotification();
+        print("Your child is now on the bus");
+      } else if (state == "2"){
+        showThirdNotification();
+        print("Your child is now at school");
       }
+    });}
+  void clearNotifications() async {
+
+
+    await prefs.remove('notifications');
+    setState(() {
+      Notifications.clear();
     });
-
-
+  }
     Widget build(BuildContext context) {
       return Scaffold(
-        body:
+        appBar: AppBar(
+          title: Text('delete all',
+          style: TextStyle(
+              color: Color(0xff515281)
+          ),
+          ),
+          backgroundColor: Colors.white,
+        elevation: 0,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.delete),
+              color: Color(0xff515281),
+
+              onPressed: clearNotifications,
+            ),
+          ],
+        ),
+        body: Notifications.isEmpty
+            ? Center(
+          child: Text(
+            'No notifications yet',
+            style: TextStyle(fontSize: 20),
+          ),
+        ):
+
         ListView.builder(
           itemCount: Notifications.length,
           itemBuilder: (BuildContext context, int index) {
@@ -246,65 +348,28 @@ class _NotificationPageState extends State<NotificationPage> {
     }
   }
 
-  List<String> Notifications = [];
+
   var scheduledTime = DateTime.now().add(Duration(seconds: 5));
 String formattedTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(scheduledTime);
 
 
-showNotification() async {
-    final prefs = await SharedPreferences.getInstance();
-    final hasNotificationShown = prefs.getBool('hasNotificationShown') ?? false;
 
 
-    if (!hasNotificationShown) {
-      FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-
-      const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
-
-      const InitializationSettings initializationSettings =
-      InitializationSettings(
-        android: initializationSettingsAndroid,
-
-      );
-
-      await flutterLocalNotificationsPlugin.initialize(
-        initializationSettings,
-      );
-
-      const AndroidNotificationDetails androidPlatformChannelSpecifics =
-      AndroidNotificationDetails(
-          'your channel id',
-          'your channel name',
-
-          importance: Importance.high,
-          priority: Priority.high,
-          ticker: 'ticker');
-      const NotificationDetails platformChannelSpecifics =
-      NotificationDetails(android: androidPlatformChannelSpecifics);
-      await flutterLocalNotificationsPlugin.show(
-          0,
-          'Hello dear',
-          'Your child has boarded the bus to go school',
-          platformChannelSpecifics,
-          payload: 'item x');
-       Notifications.add('Hello dear, '
-        'Your child has boarded the bus to go school');
-
-      await flutterLocalNotificationsPlugin.schedule(
-        0,
-        'Hello dear',
-        'Your child has boarded the bus to go school',
-        scheduledTime,
-        platformChannelSpecifics,
-      );
-      await prefs.setBool('hasNotificationShown', true);
-    }
-  }
 
 
-  Future onSelectNotification(String payload) async {
-  }
+const AndroidNotificationDetails androidPlatformChannelSpecifics =
+AndroidNotificationDetails(
+    'your channel id',
+    'your channel name',
+    importance: Importance.high,
+    priority: Priority.high,
+    playSound: true,
+    enableVibration: true,
+    enableLights: true,
+    visibility: NotificationVisibility.public,
+    autoCancel: true,
+    ticker: 'ticker');
 
+const NotificationDetails platformChannelSpecifics =
+NotificationDetails(android: androidPlatformChannelSpecifics);
 
