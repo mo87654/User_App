@@ -359,22 +359,31 @@ class _MapScreen1State extends State<MapScreen1> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      FutureBuilder<String?>(
-                  future: loadimage(),
-                  builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-                    if (snapshot.hasData && snapshot.data != null) {
-                      return CircleAvatar(
-                        radius: 60,
-                        backgroundImage: FileImage(File(snapshot.data!)),
-                      );
-                    } else {
-                      return CircleAvatar(
-                        radius: 60,
-                        child: Icon(Icons.person),
-                      );
-                    }
-                  },
-                ),
+                      CircleAvatar(
+                    backgroundColor: circleAvatarColor,
+                    radius: 60,
+                        child: FutureBuilder<String?>(
+                          future: loadimage(),
+                          builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+                            if (snapshot.hasData && snapshot.data != null) {
+                              return CircleAvatar(
+                                radius: 55,
+                                backgroundImage: FileImage(File(snapshot.data!)),
+                              );
+                            } else {
+                              return CircleAvatar(
+                                radius: 60,
+                                child: Icon(Icons.person,
+                                  color: Color(0xFF91CC04),
+
+                                ),
+                                backgroundColor: Colors.white,
+
+                              );
+                            }
+                          },
+                        ),
+                      ),
                       SizedBox(width: 25),
                       Text(
                         text,

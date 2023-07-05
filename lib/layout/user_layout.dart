@@ -122,7 +122,7 @@ class _UserLayoutState extends State<UserLayout> {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
       appBar: AppBar(
-        
+        elevation: 0,
         backgroundColor: Color(0xff515281),
         leading: leadingicon[2 - _currentIndex],
         title: Text(
