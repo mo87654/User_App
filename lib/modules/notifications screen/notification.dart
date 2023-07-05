@@ -53,12 +53,12 @@ class _NotificationPageState extends State<NotificationPage> {
 
     var play = 'Hello dear, '
         'Your child is now at home';
-    //await flutterLocalNotificationsPlugin.cancelAll();
-    if (!Notifications.contains(play)) {
+
+
       await flutterLocalNotificationsPlugin.show(
           0,
           'Hello dear',
-          'Your child is now at home99999999',
+          'Your child is now at home',
           platformChannelSpecifics,
           payload: 'item x');
 
@@ -68,7 +68,7 @@ class _NotificationPageState extends State<NotificationPage> {
 
       await prefs.setStringList('notifications', Notifications);
 
-    }
+
 
   }
 
@@ -85,24 +85,24 @@ class _NotificationPageState extends State<NotificationPage> {
       initializationSettings,
     );
 
-    var play = 'Hello dear, '
-        'Your child is now at school';
+    var playload1 = 'Hello dear, '
+        'Your child is now in bus';
     //await flutterLocalNotificationsPlugin.cancelAll();
-    if (!Notifications.contains(play)) {
+
       await flutterLocalNotificationsPlugin.show(
           0,
           'Hello dear',
-          'Your child is now at school',
+          'Your child is now in bus',
           platformChannelSpecifics,
           payload: 'item x');
 
       setState(() {
-        Notifications.add(play);
+        Notifications.add(playload1);
       });
 
       await prefs.setStringList('notifications', Notifications);
 
-    }
+
 
   }
   showThirdNotification() async {
@@ -118,24 +118,24 @@ class _NotificationPageState extends State<NotificationPage> {
       initializationSettings,
     );
 
-    var play = 'Hello dear, '
-        'Your child is now in bus';
+    var playload = 'Hello dear, '
+        'Your child is now at school';
     //await flutterLocalNotificationsPlugin.cancelAll();
-    if (!Notifications.contains(play)) {
+
       await flutterLocalNotificationsPlugin.show(
           0,
           'Hello dear',
-          'Your child is now in bus',
+          'Your child is now at school',
           platformChannelSpecifics,
           payload: 'item x');
 
       setState(() {
-        Notifications.add(play);
+        Notifications.add(playload);
       });
 
       await prefs.setStringList('notifications', Notifications);
 
-    }
+
 
   }
 
@@ -208,10 +208,16 @@ class _NotificationPageState extends State<NotificationPage> {
         });
         print("Your child is now at home");
       } else if (state == "1") {
-        showSecondNotification();
+        setState(() {}); // إعادة بناء واجهة المستخدم
+        Future.delayed(Duration(milliseconds: 100), () {
+          showSecondNotification();
+        });
         print("Your child is now on the bus");
       } else if (state == "2"){
-        showThirdNotification();
+        setState(() {}); // إعادة بناء واجهة المستخدم
+        Future.delayed(Duration(milliseconds: 100), () {
+          showThirdNotification();
+        });
         print("Your child is now at school");
       }
     });}

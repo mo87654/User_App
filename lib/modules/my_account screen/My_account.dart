@@ -22,10 +22,6 @@ class _MyAccountState extends State<MyAccount> {
   //final current = FirebaseAuth.instance;
 
   final user =  FirebaseAuth.instance.currentUser!;
-  // final User =  FirebaseFirestore.instance
-  //   .collection("users")
-  //  .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-  // .snapshots();
 
   Future<Object> getuserinfo() async {
     final CollectionReference users = FirebaseFirestore.instance.collection('Students');
