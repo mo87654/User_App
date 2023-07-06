@@ -193,10 +193,13 @@ Timer? timer;
         });
         //  previousState = "2";
       }
-      // setState(() {
-      //   previousState = state;
-      // });
+      if (previousState == "") {
+        setState(() {
+          previousState = state;
+        });
+      }
     });
+
   }
   void clearNotifications() async {
 
