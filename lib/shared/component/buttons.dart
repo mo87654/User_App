@@ -10,7 +10,7 @@ Widget appButton({
   double height = 45,
   double width = double.infinity,
   double radius = 10.0,
-  Color buttonColor = Colors.blueAccent,
+  Color buttonColor = const Color(0xff515281),
   bool isLoading = false,
   // bool isIcon = false,
   // theIcon = Icons.email
