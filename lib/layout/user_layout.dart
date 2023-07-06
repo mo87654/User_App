@@ -77,7 +77,7 @@ class _UserLayoutState extends State<UserLayout> {
     'Notifications',
     'My account'
   ];
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   final List<IconData> _iconList = [
     Icons.person,
     Icons.notifications,

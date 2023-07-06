@@ -22,7 +22,7 @@ class _LoginState extends State<Login> {
 
   bool showpassword = true;
   bool isLoading = false;
-  final emailRegex = RegExp(r"^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$");
+  final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$');
 
 
 
