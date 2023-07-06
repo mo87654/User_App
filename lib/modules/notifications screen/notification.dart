@@ -39,12 +39,7 @@ Timer? timer;
     initPrefs();
 
   }
-  @override
-  void dispose() {
-    super.dispose();
 
-    timer?.cancel();
-  }
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
 
@@ -193,13 +188,10 @@ Timer? timer;
         });
         //  previousState = "2";
       }
-      if (previousState == "") {
-        setState(() {
-          previousState = state;
-        });
-      }
+      // setState(() {
+      //   previousState = state;
+      // });
     });
-
   }
   void clearNotifications() async {
 
