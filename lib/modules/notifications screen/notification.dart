@@ -39,12 +39,7 @@ Timer? timer;
     initPrefs();
 
   }
-  @override
-  void dispose() {
-    super.dispose();
 
-    timer?.cancel();
-  }
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
 

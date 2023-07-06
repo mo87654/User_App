@@ -415,194 +415,188 @@ class _MyAccountState extends State<MyAccount> {
 
           Padding(
             padding: const EdgeInsets.only(top: 25, left: 25, right: 25),
-            child: SingleChildScrollView(
+            child: Column(
 
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 25.0),
+                    child:FutureBuilder(
+                      future: getuserinfo(),
+                      builder: (_, AsyncSnapshot snapshot) {
+                        if(snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
 
-              child: SingleChildScrollView(
-                child: Column(
+                        nameController.text = snapshot.data['name'].toString();
+                        return TextFormField(
 
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 25.0),
-                        child:FutureBuilder(
-                          future: getuserinfo(),
-                          builder: (_, AsyncSnapshot snapshot) {
-                            if(snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            }
-
-                            nameController.text = snapshot.data['name'].toString();
-                            return TextFormField(
-
-                              controller: nameController,
-                              enabled: false,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    width: 1.0,
-                                  ),
-                                ),
-                                labelText: 'your name',
+                          controller: nameController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                width: 1.0,
                               ),
-                              readOnly: true,
-                              style: TextStyle
-                                (
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                            ),
+                            labelText: 'your name',
+                          ),
+                          readOnly: true,
+                          style: TextStyle
+                            (
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+
+                        );
+                      },
+                    ),
+
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(top: 25),
+                    child: FutureBuilder(
+                      future: getuserinfo(),
+                      builder: (_, AsyncSnapshot snapshot) {
+                        if(snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        // تعيين النص المستلم من قاعدة البيانات في حقل Textformfield
+                        emailController.text = snapshot.data['email'].toString();
+                        return TextFormField(
+
+                          controller: emailController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                width: 2.0,
                               ),
+                            ),
+                            labelText: 'your email',
+                          ),
+                          readOnly: true,
+                          style: TextStyle
+                            (
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
 
-                            );
-                          },
-                        ),
+                        );
+                      },
+                    ),
+                  ),
 
-                      ),
 
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25),
-                        child: FutureBuilder(
-                          future: getuserinfo(),
-                          builder: (_, AsyncSnapshot snapshot) {
-                            if(snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            }
-                            // تعيين النص المستلم من قاعدة البيانات في حقل Textformfield
-                            emailController.text = snapshot.data['email'].toString();
-                            return TextFormField(
+                  Padding(
+                    padding: const EdgeInsets.only(top:25.0),
+                    child: FutureBuilder(
+                      future: getuserinfo(),
+                      builder: (_, AsyncSnapshot snapshot) {
+                        if(snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
 
-                              controller: emailController,
-                              enabled: false,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    width: 2.0,
-                                  ),
-                                ),
-                                labelText: 'your email',
+                        gradController.text = snapshot.data['grad'].toString();
+                        return TextFormField(
+
+                          controller: gradController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                width: 2.0,
                               ),
-                              readOnly: true,
-                              style: TextStyle
-                                (
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                            ),
+                            labelText: 'your level',
+                          ),
+                          readOnly: true,
+                          style: TextStyle
+                            (
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+
+                        );
+                      },
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(top:25.0),
+                    child: FutureBuilder(
+                      future: getuserinfo(),
+                      builder: (_, AsyncSnapshot snapshot) {
+                        if(snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        // تعيين النص المستلم من قاعدة البيانات في حقل Textformfield
+                        addressController.text = snapshot.data['address'].toString();
+                        return TextFormField(
+
+                          controller: addressController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                width: 2.0,
                               ),
+                            ),
+                            labelText: 'your address',
+                          ),
+                          readOnly: true,
+                          style: TextStyle
+                            (
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
 
-                            );
-                          },
-                        ),
-                      ),
+                        );
+                      },
+                    ),
+                  ),
 
+                  Padding(
+                    padding: const EdgeInsets.only(top: 25.0),
+                    child: FutureBuilder(
+                      future: getuserinfo(),
+                      builder: (_, AsyncSnapshot snapshot) {
+                        if(snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
 
-                      Padding(
-                        padding: const EdgeInsets.only(top:25.0),
-                        child: FutureBuilder(
-                          future: getuserinfo(),
-                          builder: (_, AsyncSnapshot snapshot) {
-                            if(snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            }
+                        busController.text = snapshot.data['Bus_number'].toString();
+                        return TextFormField(
 
-                            gradController.text = snapshot.data['grad'].toString();
-                            return TextFormField(
-
-                              controller: gradController,
-                              enabled: false,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    width: 2.0,
-                                  ),
-                                ),
-                                labelText: 'your level',
+                          controller: busController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(
+                                width: 2.0,
                               ),
-                              readOnly: true,
-                              style: TextStyle
-                                (
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
+                            ),
+                            labelText: 'Bus_number',
+                          ),
+                          readOnly: true,
+                          style: TextStyle
+                            (
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
 
-                            );
-                          },
-                        ),
-                      ),
+                        );
+                      },
+                    ),
+                  ),
+                ]
 
-                      Padding(
-                        padding: const EdgeInsets.only(top:25.0),
-                        child: FutureBuilder(
-                          future: getuserinfo(),
-                          builder: (_, AsyncSnapshot snapshot) {
-                            if(snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            }
-                            // تعيين النص المستلم من قاعدة البيانات في حقل Textformfield
-                            addressController.text = snapshot.data['address'].toString();
-                            return TextFormField(
-
-                              controller: addressController,
-                              enabled: false,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    width: 2.0,
-                                  ),
-                                ),
-                                labelText: 'your address',
-                              ),
-                              readOnly: true,
-                              style: TextStyle
-                                (
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-
-                            );
-                          },
-                        ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
-                        child: FutureBuilder(
-                          future: getuserinfo(),
-                          builder: (_, AsyncSnapshot snapshot) {
-                            if(snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            }
-
-                            busController.text = snapshot.data['Bus_number'].toString();
-                            return TextFormField(
-
-                              controller: busController,
-                              enabled: false,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
-                                    width: 2.0,
-                                  ),
-                                ),
-                                labelText: 'Bus_number',
-                              ),
-                              readOnly: true,
-                              style: TextStyle
-                                (
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-
-                            );
-                          },
-                        ),
-                      ),
-                    ]
-
-                ),
-              ),
             ),
           ),
 
