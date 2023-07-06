@@ -176,20 +176,26 @@ Timer? timer;
         setState(() {
           previousState = state;
         });
-      } else if ( previousState != "" &&  state != previousState && state == "1") {
+      } else if (  state != previousState && state == "1") {
         setState(() {});
         showSecondNotification();
         print("Your child is now on the bus");
+        setState(() {
+          previousState = state;
+        });
         // previousState = "1";
-      } else if (previousState != "" && state != previousState && state == "2"){
+      } else if ( state != previousState && state == "2"){
         setState(() {});
         showThirdNotification();
         print("Your child is now at school");
+        setState(() {
+          previousState = state;
+        });
         //  previousState = "2";
       }
-      setState(() {
-        previousState = state;
-      });
+      // setState(() {
+      //   previousState = state;
+      // });
     });
   }
   void clearNotifications() async {
@@ -206,13 +212,13 @@ Timer? timer;
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('delete all',
+        title: Text('Notifications',
           style: TextStyle(
               color: Color(0xff515281)
           ),
         ),
         backgroundColor: Colors.white,
-        elevation: 3,
+        elevation: 0,
         actions: [
           IconButton(
             icon: Icon(Icons.delete),
@@ -324,7 +330,7 @@ AndroidNotificationDetails(
     enableVibration: true,
     enableLights: true,
     visibility: NotificationVisibility.public,
-    autoCancel: true,
+    //autoCancel: true,
     ticker: 'ticker');
 
 
