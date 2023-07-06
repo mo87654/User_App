@@ -142,7 +142,7 @@ class _MapScreen1State extends State<MapScreen1> {
             Stack(
               children: [
                 Container(
-                  height: 530,
+                  height: 650,
                   child: GoogleMap(
                     mapType: MapType.normal,
                     initialCameraPosition: const CameraPosition(
@@ -154,9 +154,10 @@ class _MapScreen1State extends State<MapScreen1> {
                   ),
                 ),
                 Positioned(
-                  top: 16,
-                  left: 16,
+                  top: 40,
+                  left: 20,
                   child: FloatingActionButton(
+                    backgroundColor: Colors.green,
                     onPressed: updateLocation,
                     child: Icon(Icons.refresh),
                   ),
@@ -177,7 +178,7 @@ class _MapScreen1State extends State<MapScreen1> {
               decoration: BoxDecoration(color: Colors.black38,),
 
             ),
-            SizedBox(height: 50,),
+            SizedBox(height: 35,),
 
 
 

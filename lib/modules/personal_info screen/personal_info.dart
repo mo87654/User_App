@@ -4,42 +4,46 @@ import 'package:user_app/shared/component/buttons.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
-class PersonalInfo extends StatelessWidget {
+class PersonalInfo extends StatefulWidget {
+  @override
+  State<PersonalInfo> createState() => _PersonalInfoState();
+}
+
+class _PersonalInfoState extends State<PersonalInfo> {
   var formkey = GlobalKey<FormState>();
+
   TextEditingController _usernameController = TextEditingController();
+
   TextEditingController _phoneNumberController = TextEditingController();
-  TextEditingController _macAdressController = TextEditingController();
+
   final user = FirebaseAuth.instance.currentUser;
+
   bool isLoading = false;
-
-
-
-
-
 
   @override
   void initState() {
+    super.initState();
     getUserData();
 
 
   }
+
   String getCurrentUserId(){
     final user = FirebaseAuth.instance.currentUser;
     return user!.uid;
 
   }
 
-
   void getUserData() async {
     final user = FirebaseAuth.instance.currentUser;
 
     final userData = await FirebaseFirestore.instance
         .collection('Students')
-        .doc()
+        .doc(user!.uid)
         .get();
     _usernameController.text = userData['name'];
     _phoneNumberController.text = userData['tele-num'];
-    _macAdressController.text = userData['MAC-address'];
+
 
 
 
@@ -52,13 +56,8 @@ class PersonalInfo extends StatelessWidget {
     await FirebaseFirestore.instance.collection('Students').doc(user!.uid).update({
       'name': _usernameController.text,
       'tele-num': _phoneNumberController.text,
-      'MAC-address':_macAdressController.text,
     });
   }
-
-
-
-
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,37 +134,6 @@ class PersonalInfo extends StatelessWidget {
                   {
                     if (value!.isEmpty){
                       return 'Tele_number required';
-                    }
-                    return null;
-                  },
-
-                ),
-              ),
-              SizedBox(height: 30.0),
-              Padding(
-                padding: const EdgeInsetsDirectional.only(
-                    start: 20,
-                    end: 20
-                ),
-                child: TextFormField(
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                  decoration: InputDecoration(
-                    floatingLabelStyle: TextStyle(
-                      fontSize: 18,
-                    ),
-                    border: OutlineInputBorder(),
-                    labelText:'Mac_Address',
-                  ),
-                  keyboardType: TextInputType.text,
-                  textAlignVertical: TextAlignVertical.top,
-                  textInputAction: TextInputAction.done,
-                  controller: _macAdressController,
-                  validator: (value)
-                  {
-                    if (value!.isEmpty){
-                      return 'Mac_Address required';
                     }
                     return null;
                   },
