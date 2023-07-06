@@ -4,18 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:location/location.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:user_app/modules/AboutUs%20Screen/AboutUs.dart';
-import '../modules/change_password screen/change_password.dart';
-import '../modules/help screen/help_screen.dart';
 import '../modules/home screen/home.dart';
 import '../modules/my_account screen/My_account.dart';
 import '../modules/notifications screen/notification.dart';
-import '../modules/personal_info screen/personal_info.dart';
-import '../shared/component/SignoutMessage.dart';
-import '../shared/component/colors.dart';
 import '../shared/component/components.dart';
-import 'dart:io';
+
 class UserLayout extends StatefulWidget {
   const UserLayout({Key? key}) : super(key: key);
 
@@ -61,10 +54,10 @@ Future<void> checkLocationService ()async{
   }
 }
 
-Future<String?> loadimage() async {
-  SharedPreferences saveimage = await SharedPreferences.getInstance();
-  return saveimage.getString("imagepath");
-}
+// Future<String?> loadimage() async {
+//   SharedPreferences saveimage = await SharedPreferences.getInstance();
+//   return saveimage.getString("imagepath");
+// }
 class _UserLayoutState extends State<UserLayout> {
   var currentIndex = 2;
   List<Widget> userScreens =[
@@ -110,220 +103,37 @@ class _UserLayoutState extends State<UserLayout> {
           onpressedfun: (){
             Navigator.pop(context);
           }
-      ),
-      Builder(
+      ), Builder(
           builder: (context) {
             return IconButton(icon: const Icon(Icons.menu), onPressed: () {  Scaffold.of(context).openDrawer(); },
 
             );
           }
       ),
+
     ];
     return Scaffold(
       drawerEnableOpenDragGesture: false,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Color(0xff515281),
-        leading: leadingicon[2 - _currentIndex],
-        title: Text(
-          title[2 - _currentIndex],
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      drawer:   SafeArea(
-        child: Drawer(
-          shadowColor: Color(0xff4d6aaa),
-       backgroundColor: Colors.white,
-          child: Column(
+      // appBar: AppBar(automaticallyImplyLeading: false,
+      //   elevation: 0,
+      //   backgroundColor: Color(0xff515281),
+      //   leading: leadingicon[2 - _currentIndex],
+      //   title: Text(
+      //     title[2 - _currentIndex],
+      //     style: TextStyle(
+      //       fontWeight: FontWeight.bold,
+      //     ),
+      //   ),
+      // ),
 
-            children: [
-              ListTile(
-
-                leading:FutureBuilder<String?>(
-              future: loadimage(),
-          builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-            if (snapshot.hasData && snapshot.data != null) {
-              return CircleAvatar(
-                radius: 30,
-                backgroundImage: FileImage(File(snapshot.data!)),
-              );
-            } else {
-              return CircleAvatar(
-                radius: 50,
-                child: Icon(Icons.person),
-              );
-            }
-          },
-        ),
-                title: FutureBuilder(
-                future: getuserinfo(),
-               builder: (_ , AsyncSnapshot snapshot) {
-                 if (snapshot.connectionState == ConnectionState.waiting) {
-                   return Center(child: CircularProgressIndicator());
-                 }
-                 return Text(snapshot.data['name'].toString(),
-                   style: TextStyle(
-                     fontSize: 17,
-                     fontWeight: FontWeight.bold,
-
-                   ),
-                 );
-
-               },
-                ),
-
-
-                subtitle:  FutureBuilder(
-                  future: getuserinfo(),
-                  builder: (_ , AsyncSnapshot snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    return Text(snapshot.data['email'].toString(),
-
-                    );
-
-                  },
-                ),
-                onTap: () {
-
-                },
-              ),
-
-              const Padding(
-                padding: EdgeInsets.only(right: 24,top: 24, bottom: 16),
-                child: Divider(
-                  color: Colors.black26,
-                  height: 1,
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.perm_contact_cal_outlined),
-                title: const Text(' Edit Profile ',
-                  style: TextStyle(
-                      fontSize: 17
-                  ),
-                ),
-
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(
-                          builder: (context) => PersonalInfo()
-                      )
-                  );
-                },
-              ),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: ListTile(
-                      leading: const Icon(Icons.notification_important),
-                      title: const Text('Notifications',
-                        style: TextStyle(
-                            fontSize: 17
-                        ),
-
-                      ),
-
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 40.0),
-                    child: Switch(onChanged: (bool value) {  }, value: true, activeColor: app_Color(),),
-                  ),
-                ],
-              ),
-
-              ListTile(
-                leading: const Icon(Icons.lock),
-                title: const Text('Change Password',
-                  style: TextStyle(
-                      fontSize: 17
-                  ),
-                ),
-
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(
-                          builder: (context) => ChangePassword()
-                      )
-                  );
-                },
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 20, right: 20),
-                child: Divider(
-                  color: Colors.black26,
-                  height: 1,
-                ),
-              ),
-
-              ListTile(
-                leading: const Icon(Icons.error),
-                title: const Text('About us',
-                  style: TextStyle(
-                      fontSize: 17
-                  ),
-                ),
-
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(
-                          builder: (context) => AboutUsScreen()
-                      )
-                  );
-                },
-              ),
-
-              ListTile(
-                leading: const Icon(Icons.help),
-                title: const Text('Help!',
-                  style: TextStyle(
-                      fontSize: 17
-                  ),
-                ),
-
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(
-                          builder: (context) => HelpPage()
-                      )
-                  );
-                },
-              ),
-
-              ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text('Log Out',
-                  style: TextStyle(
-                      fontSize: 17
-                  ),
-                ),
-
-                onTap: () {
-                  showDialog(context: context,
-                    builder: (BuildContext context) => SignOutMessage(),);
-                }
-              ),
-            ],
-          ),
-
-
-        ),
-      ),
       body: userScreens[2 - _currentIndex],
 
       bottomNavigationBar: AnimatedBottomNavigationBar(
+        height: 70,
         splashRadius: 50,
-        iconSize: 30,
+        iconSize: 37,
         inactiveColor: Colors.white,
-        activeColor: Colors.white,
+        activeColor: Colors.amber,
         backgroundColor: Color(0xff515281),
         splashColor: Colors.cyan,
         icons: _iconList,

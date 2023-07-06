@@ -17,6 +17,8 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage> {
 
+
+Timer? timer;
   late SharedPreferences prefs;
   List<String> Notifications = [];
   bool notificationDisplayed = false;
@@ -37,17 +39,23 @@ class _NotificationPageState extends State<NotificationPage> {
     initPrefs();
 
   }
+  @override
+  void dispose() {
+    super.dispose();
 
+    timer?.cancel();
+  }
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+
+  InitializationSettings initializationSettings =
+  InitializationSettings(
+    android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+  );
 
   showNotification() async {
-    var formattedTime = DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.now()); // تنسيق الوقت
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+    var formattedTime = DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.now());
 
-    const InitializationSettings initializationSettings =
-    InitializationSettings(
-      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-    );
 
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
@@ -56,19 +64,19 @@ class _NotificationPageState extends State<NotificationPage> {
         'Your child is now at home';
 
 
-      await flutterLocalNotificationsPlugin.show(
-          0,
-          'Hello dear',
-          'Your child is now at home',
-          platformChannelSpecifics,
-          payload: 'item x');
+    await flutterLocalNotificationsPlugin.show(
+        0,
+        'Hello dear',
+        'Your child is now at home',
+        platformChannelSpecifics,
+        payload: 'item x');
 
-      setState(() {
-        Notifications.add(play);
-        Notificationstime.add(formattedTime);
-      });
+    setState(() {
+      Notifications.add(play);
+      Notificationstime.add(formattedTime);
+    });
 
-      await prefs.setStringList('notifications', Notifications);
+    await prefs.setStringList('notifications', Notifications);
     prefs.setStringList('notification_time', Notificationstime);
 
 
@@ -76,13 +84,7 @@ class _NotificationPageState extends State<NotificationPage> {
 
   showSecondNotification() async {
     var formattedTime2 = DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.now()); // تنسيق الوقت
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
 
-    const InitializationSettings initializationSettings =
-    InitializationSettings(
-      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-    );
 
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
@@ -92,32 +94,26 @@ class _NotificationPageState extends State<NotificationPage> {
         'Your child is now in bus';
     //await flutterLocalNotificationsPlugin.cancelAll();
 
-      await flutterLocalNotificationsPlugin.show(
-          0,
-          'Hello dear',
-          'Your child is now in bus',
-          platformChannelSpecifics,
-          payload: 'item x');
+    await flutterLocalNotificationsPlugin.show(
+        0,
+        'Hello dear',
+        'Your child is now in bus',
+        platformChannelSpecifics,
+        payload: 'item x');
 
-      setState(() {
-        Notifications.add(playload1);
-        Notificationstime.add(formattedTime2);
-      });
+    setState(() {
+      Notifications.add(playload1);
+      Notificationstime.add(formattedTime2);
+    });
 
-      await prefs.setStringList('notifications', Notifications);
+    await prefs.setStringList('notifications', Notifications);
     prefs.setStringList('notification_time', Notificationstime);
 
 
   }
   showThirdNotification() async {
     var formattedTime3 = DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.now()); // تنسيق الوقت
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
 
-    const InitializationSettings initializationSettings =
-    InitializationSettings(
-      android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-    );
 
     await flutterLocalNotificationsPlugin.initialize(
       initializationSettings,
@@ -127,77 +123,43 @@ class _NotificationPageState extends State<NotificationPage> {
         'Your child has arrived safely at school';
     //await flutterLocalNotificationsPlugin.cancelAll();
 
-      await flutterLocalNotificationsPlugin.show(
-          0,
-          'Hello dear',
-          'Your child has arrived safely at school',
-          platformChannelSpecifics,
-          payload: 'item x');
+    await flutterLocalNotificationsPlugin.show(
+        0,
+        'Hello dear',
+        'Your child has arrived safely at school',
+        platformChannelSpecifics,
+        payload: 'item x');
 
-      setState(() {
-        Notifications.add(playload);
-        Notificationstime.add(formattedTime3);
-      });
+    setState(() {
+      Notifications.add(playload);
+      Notificationstime.add(formattedTime3);
+    });
 
-      await prefs.setStringList('notifications', Notifications);
+    await prefs.setStringList('notifications', Notifications);
     prefs.setStringList('notification_time', Notificationstime);
 
 
   }
 
 
-    bool isButtonVisible = true;
-    bool isButtonVisible1 = true;
-    bool isButtonVisible2 = true;
-    bool isButtonVisible3 = true;
-    bool isChecked = false;
-    bool isChecked1 = false;
-    bool isChecked2 = false;
-    bool isChecked3 = false;
-    Color textBackgroundColor = Colors.white;
-    Color textBackgroundColor1 = Colors.white;
-    Color textBackgroundColor2 = Colors.white;
-    Color textBackgroundColor3 = Colors.white;
-    String textMessage = 'Your child has boarded the bus to go home';
-    String textMessage1 = 'Your child has left the bus heading home';
-    String textMessage2 = 'Your child has boarded the bus to go home';
-    String textMessage3 = 'Your child has left the bus heading home';
+  bool isButtonVisible = true;
 
-    void onButtonPressed() {
-      setState(() {
-        isButtonVisible = false;
-        textBackgroundColor = Colors.grey[300]!;
-        textMessage = 'Your child has now left the bus and headed to school';
-        isChecked = true;
-      });
-    }
-    void onButtonPressed1() {
-      setState(() {
-        isButtonVisible1 = false;
-        textBackgroundColor1 = Colors.grey[300]!;
-        textMessage1 = 'Your child has now left the bus and headed to school';
-        isChecked1 = true;
-      });
-    }
-    void onButtonPressed2() {
-      setState(() {
-        isButtonVisible2 = false;
-        textBackgroundColor2 = Colors.grey[300]!;
-        textMessage2 = 'Your child has now left the bus and headed to school';
-        isChecked2 = true;
-      });
-    }
+  bool isChecked = false;
 
-    void onButtonPressed3() {
-      setState(() {
-        isButtonVisible3 = false;
-        textBackgroundColor3 = Colors.grey[300]!;
-        textMessage3 = 'Your child has now left the bus and headed to school';
-        isChecked3 = true;
-      });
-    }
+  Color textBackgroundColor = Colors.white;
+
+
+
+  void onButtonPressed() {
+    setState(() {
+      isButtonVisible = false;
+      textBackgroundColor = Colors.grey[300]!;
+      isChecked = true;
+    });
+  }
+
   void startTimer() {
-    Timer.periodic(const Duration(seconds: 15), (timer) async {
+    timer = Timer.periodic(const Duration(seconds: 15), (timer) async {
       CollectionReference users = FirebaseFirestore.instance.collection('Students');
       final user = FirebaseAuth.instance.currentUser!;
       final String uid = user.uid;
@@ -241,130 +203,109 @@ class _NotificationPageState extends State<NotificationPage> {
       Notificationstime.clear();
     });
   }
-    Widget build(BuildContext context) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('delete all',
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('delete all',
           style: TextStyle(
               color: Color(0xff515281)
           ),
-          ),
-          backgroundColor: Colors.white,
-        elevation: 0,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.delete),
-              color: Color(0xff515281),
-
-              onPressed: clearNotifications,
-            ),
-          ],
         ),
-        body: Notifications.isEmpty
-            ? Center(
-          child: Text(
-            'No notifications yet',
-            style: TextStyle(fontSize: 20),
-          ),
-        ):
+        backgroundColor: Colors.white,
+        elevation: 3,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.delete),
+            color: Color(0xff515281),
 
-        ListView.builder(
-          //reverse: true,
-          itemCount: Notifications.length,
-          itemBuilder: (BuildContext context, int index) {
-            final notification = Notifications[index];
-            final notificationtime = index < Notificationstime.length ? Notificationstime[index] : "";
-            return Container(
-              margin: EdgeInsetsDirectional.fromSTEB(2, 20, 2, 10),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: textBackgroundColor,
-                  borderRadius: BorderRadius.circular(6.0)),
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.message_outlined),
-                        Text(
-                          "smart tracking system",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Color(0xff644f73),
-                          ),
+            onPressed: clearNotifications,
+          ),
+        ],
+      ),
+      body: Notifications.isEmpty
+          ? Center(
+            child: Text(
+          'No notifications yet',
+          style: TextStyle(fontSize: 20),
+        ),
+      ):
+
+      ListView.builder(
+        //reverse: true,
+        itemCount: Notifications.length,
+        itemBuilder: (BuildContext context, int index) {
+          final notification = Notifications[index];
+          final notificationtime = index < Notificationstime.length ? Notificationstime[index] : "";
+          return Container(
+            margin: EdgeInsetsDirectional.fromSTEB(2, 20, 2, 10),
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: Colors.grey[300]!,
+                borderRadius: BorderRadius.circular(6.0)),
+            child: Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.message_outlined, color: Colors.lightBlue,),
+                      SizedBox(width: 6,),
+                      Text(
+                        "smart tracking system",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Color(0xff644f73),
                         ),
-                        CircleAvatar(
-                          radius: 2,
-                          backgroundColor: Colors.black38,
-                        ),
-                        Text(
-                          notificationtime,
-                          style: TextStyle(
-                            color: Colors.black54,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              notification,
-                              style: TextStyle(
-                                fontSize: 17,
-                              ),
-                            ),
-                          )
-                        ],
                       ),
-                    ),
-                    Row(
+                      SizedBox(width: 6,),
+                      CircleAvatar(
+                        radius: 2,
+                        backgroundColor: Colors.black38,
+                      ),
+                      SizedBox(width: 6,),
+                      Text(
+                        notificationtime,
+                        style: TextStyle(
+                          color: Colors.black54,
+                        ),
+                      ),
+
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
                       children: [
                         Expanded(
-                          child: Visibility(
-                            visible: isButtonVisible,
-                            child: TextButton(
-
-                              onPressed: onButtonPressed,
-
-
-                              style: TextButton.styleFrom(
-                                primary: const Color(0xff515281),
-                                backgroundColor: const Color(0xffE0E0E0),
-                              ),
-                              child: Text(
-                                'OK',
-                                style: TextStyle(fontSize: 20),
-                              ),
+                          child: Text(
+                            notification,
+                            style: TextStyle(
+                              fontSize: 17,
                             ),
                           ),
                         )
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Visibility(
-                            visible: isChecked,
-                            child: Icon(Icons.library_add_check_rounded,
-                              color: Colors.lightBlueAccent[100],)),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(Icons.library_add_check_rounded,
+                        color: Colors.green,),
 
-                      ],
-                    )
-                  ],
-                ),
+                    ],
+                  )
+                ],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
+      ),
 
 
-      );
-    }
+    );
   }
+}
 
 
 
