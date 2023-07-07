@@ -54,12 +54,13 @@ dependencies:
   intl: ^0.18.1
   shared_preferences: ^2.1.1
   path_provider: ^2.0.15
-  firebase_storage: ^11.1.2
+  firebase_storage: ^11.2.4
   animated_bottom_navigation_bar: ^1.2.0
   location: ^4.2.0
   google_maps_flutter: ^2.3.1
   flutter_background_service: ^3.0.1
   workmanager: ^0.5.1
+  flutter_sms: ^2.6.4
 
 
 
