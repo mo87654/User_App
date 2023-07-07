@@ -47,13 +47,13 @@ class _MyAccountState extends State<MyAccount> {
     setState(() {
       _imagepath= saveimage.getString("imagepath");
     });
-    return saveimage.getString("imagepath");
+    //return saveimage.getString("imagepath");
   }
 
-  // Future<String?> loadimagedrawer() async {
-  //   SharedPreferences saveimage = await SharedPreferences.getInstance();
-  //   return saveimage.getString("imagepath");
-  // }
+   Future<String?> loadimagedrawer() async {
+    SharedPreferences saveimage = await SharedPreferences.getInstance();
+    return saveimage.getString("imagepath");
+   }
 
 
 
@@ -140,7 +140,7 @@ class _MyAccountState extends State<MyAccount> {
                 ListTile(
 
                   leading:FutureBuilder<String?>(
-                    future:  loadimage(),
+                    future:   loadimagedrawer(),
                     builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
                       if (snapshot.hasData && snapshot.data != null) {
                         return CircleAvatar(
@@ -155,7 +155,7 @@ class _MyAccountState extends State<MyAccount> {
                       }
                     },
                   ),
-                  title: FutureBuilder(
+                  title:FutureBuilder(
                     future: getuserinfo(),
                     builder: (_ , AsyncSnapshot snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -316,8 +316,6 @@ class _MyAccountState extends State<MyAccount> {
           ),
         ),
 
-
-
         body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -327,7 +325,7 @@ class _MyAccountState extends State<MyAccount> {
             children: [
               Container(
                 height: 260 ,
-                width: double.infinity,
+                //width: double.infinity,
                 child: Stack(
                   clipBehavior: Clip.none,
                   alignment: AlignmentDirectional.bottomCenter,

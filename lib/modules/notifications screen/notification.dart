@@ -154,7 +154,7 @@ Timer? timer;
   }
 
 void startTimer() {
-  timer = Timer.periodic(const Duration(seconds: 15), (timer) async {
+  timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
     CollectionReference users = FirebaseFirestore.instance.collection('Students');
     final user = FirebaseAuth.instance.currentUser!;
     final String uid = user.uid;
@@ -192,6 +192,8 @@ void startTimer() {
       Notificationstime.clear();
     });
   }
+
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
