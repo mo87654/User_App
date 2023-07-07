@@ -5,7 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_sms/flutter_sms.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ Timer? timer;
   late SharedPreferences prefs;
   List<String> Notifications = [];
   bool notificationDisplayed = false;
-  String previousState = "";
+
   List<String> Notificationstime = [];
   void initPrefs() async {
     prefs = await SharedPreferences.getInstance();
@@ -69,11 +69,17 @@ Timer? timer;
     setState(() {
       Notifications.add(play);
       Notificationstime.add(formattedTime);
+
     });
 
     await prefs.setStringList('notifications', Notifications);
     prefs.setStringList('notification_time', Notificationstime);
-
+    CollectionReference users = FirebaseFirestore.instance.collection('Students');
+    final user = FirebaseAuth.instance.currentUser!;
+    final String uid = user.uid;
+    var phonenum = await users.doc(uid).get().then((value) {
+      return value.get('tele-num');
+    });
 
   }
 
@@ -162,25 +168,35 @@ void startTimer() {
       return value.get('state');
     });
 
-    print("Current state: $state");
-    print("Previous state: $previousState");
-    if (state != previousState) {
-      setState(() {
+    setState(() async {
+      // استرجاع الحالة السابقة من Firestore
+      final userRef = users.doc(user.uid);
+      final userSnapshot = await userRef.get();
+      var previousState = userSnapshot.get('previousState');
+
+      print("Current state: $state");
+      print("Previous state: $previousState");
+      if (state != previousState) {
+        if (state == "0") {
+          showNotification();
+          print("Your child is now at home");
+        } else if (state == "1") {
+          showSecondNotification();
+          print("Your child is now on the bus");
+        } else if (state == "2") {
+          showThirdNotification();
+          print("Your child is now at school");
+        }
+
+        // تحديث الحالة السابقة في Firestore
+        await userRef.update({'previousState': state});
+
         previousState = state;
-      });
-      if (state == "0") {
-        showNotification();
-        print("Your child is now at home");
-      } else if (state == "1") {
-        showSecondNotification();
-        print("Your child is now on the bus");
-      } else if (state == "2") {
-        showThirdNotification();
-        print("Your child is now at school");
       }
-    }
+    });
   });
 }
+
   void clearNotifications() async {
 
 
