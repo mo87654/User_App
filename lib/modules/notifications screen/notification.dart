@@ -153,46 +153,34 @@ Timer? timer;
     });
   }
 
-  void startTimer() {
-    timer = Timer.periodic(const Duration(seconds: 15), (timer) async {
-      CollectionReference users = FirebaseFirestore.instance.collection('Students');
-      final user = FirebaseAuth.instance.currentUser!;
-      final String uid = user.uid;
-      var state = await users.doc(uid).get().then((value) {
-        return value.get('state');
-      });
+void startTimer() {
+  timer = Timer.periodic(const Duration(seconds: 15), (timer) async {
+    CollectionReference users = FirebaseFirestore.instance.collection('Students');
+    final user = FirebaseAuth.instance.currentUser!;
+    final String uid = user.uid;
+    var state = await users.doc(uid).get().then((value) {
+      return value.get('state');
+    });
 
-      print("Current state: $state");
-      print("Previous state: $previousState");
-      if (    state != previousState && state == "0") {
-        setState(() {});
+    print("Current state: $state");
+    print("Previous state: $previousState");
+    if (state != previousState) {
+      setState(() {
+        previousState = state;
+      });
+      if (state == "0") {
         showNotification();
         print("Your child is now at home");
-        setState(() {
-          previousState = state;
-        });
-      } else if (  state != previousState && state == "1") {
-        setState(() {});
+      } else if (state == "1") {
         showSecondNotification();
         print("Your child is now on the bus");
-        setState(() {
-          previousState = state;
-        });
-        // previousState = "1";
-      } else if ( state != previousState && state == "2"){
-        setState(() {});
+      } else if (state == "2") {
         showThirdNotification();
         print("Your child is now at school");
-        setState(() {
-          previousState = state;
-        });
-        //  previousState = "2";
       }
-      // setState(() {
-      //   previousState = state;
-      // });
-    });
-  }
+    }
+  });
+}
   void clearNotifications() async {
 
 
