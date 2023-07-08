@@ -71,6 +71,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
         title: Text (
             'Personal Info'
         ),
+       backgroundColor: Color(0xff515281),
        // backgroundColor: color(),
       ),
       body: SingleChildScrollView(

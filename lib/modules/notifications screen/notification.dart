@@ -3,9 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_sms/flutter_sms.dart';
+import 'package:user_app/modules/notifications%20screen/notificationpart2.dart';
+
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({Key? key}) : super(key: key);
@@ -18,131 +20,14 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
 
 
-Timer? timer;
-  late SharedPreferences prefs;
-  List<String> Notifications = [];
-  bool notificationDisplayed = false;
 
-  List<String> Notificationstime = [];
-  void initPrefs() async {
-    prefs = await SharedPreferences.getInstance();
-    setState(() {
-      Notifications = prefs.getStringList('notifications') ?? [];
-      Notificationstime = prefs.getStringList('notification_time') ?? [];
-    });
-  }
-
-  @override
+@override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    startTimer();
     initPrefs();
 
   }
-
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
-
-  InitializationSettings initializationSettings =
-  InitializationSettings(
-    android: AndroidInitializationSettings('@mipmap/ic_launcher'),
-  );
-
-  showNotification() async {
-    var formattedTime = DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.now());
-
-
-    await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-    );
-    var play = 'Hello dear, '
-        'Your child is now at home';
-
-
-    await flutterLocalNotificationsPlugin.show(
-        0,
-        'Hello dear',
-        'Your child is now at home',
-        platformChannelSpecifics,
-        payload: 'item x');
-
-    setState(() {
-      Notifications.add(play);
-      Notificationstime.add(formattedTime);
-
-    });
-
-    await prefs.setStringList('notifications', Notifications);
-    prefs.setStringList('notification_time', Notificationstime);
-    CollectionReference users = FirebaseFirestore.instance.collection('Students');
-    final user = FirebaseAuth.instance.currentUser!;
-    final String uid = user.uid;
-    var phonenum = await users.doc(uid).get().then((value) {
-      return value.get('tele-num');
-    });
-
-  }
-
-  showSecondNotification() async {
-    var formattedTime2 = DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.now()); // تنسيق الوقت
-
-
-    await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-    );
-
-    var playload1 = 'Hello dear, '
-        'Your child is now in bus';
-    //await flutterLocalNotificationsPlugin.cancelAll();
-
-    await flutterLocalNotificationsPlugin.show(
-        0,
-        'Hello dear',
-        'Your child is now in bus',
-        platformChannelSpecifics,
-        payload: 'item x');
-
-    setState(() {
-      Notifications.add(playload1);
-      Notificationstime.add(formattedTime2);
-    });
-
-    await prefs.setStringList('notifications', Notifications);
-    prefs.setStringList('notification_time', Notificationstime);
-
-
-  }
-  showThirdNotification() async {
-    var formattedTime3 = DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.now()); // تنسيق الوقت
-
-
-    await flutterLocalNotificationsPlugin.initialize(
-      initializationSettings,
-    );
-
-    var playload = 'Hello dear, '
-        'Your child has arrived safely at school';
-    //await flutterLocalNotificationsPlugin.cancelAll();
-
-    await flutterLocalNotificationsPlugin.show(
-        0,
-        'Hello dear',
-        'Your child has arrived safely at school',
-        platformChannelSpecifics,
-        payload: 'item x');
-
-    setState(() {
-      Notifications.add(playload);
-      Notificationstime.add(formattedTime3);
-    });
-
-    await prefs.setStringList('notifications', Notifications);
-    prefs.setStringList('notification_time', Notificationstime);
-
-
-  }
-
-
   bool isButtonVisible = true;
 
   bool isChecked = false;
@@ -159,54 +44,28 @@ Timer? timer;
     });
   }
 
-void startTimer() {
-  timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
-    CollectionReference users = FirebaseFirestore.instance.collection('Students');
-    final user = FirebaseAuth.instance.currentUser!;
-    final String uid = user.uid;
-    var state = await users.doc(uid).get().then((value) {
-      return value.get('state');
-    });
 
-    setState(() async {
-      // استرجاع الحالة السابقة من Firestore
-      final userRef = users.doc(user.uid);
-      final userSnapshot = await userRef.get();
-      var previousState = userSnapshot.get('previousState');
 
-      print("Current state: $state");
-      print("Previous state: $previousState");
-      if (state != previousState) {
-        if (state == "0") {
-          showNotification();
-          print("Your child is now at home");
-        } else if (state == "1") {
-          showSecondNotification();
-          print("Your child is now on the bus");
-        } else if (state == "2") {
-          showThirdNotification();
-          print("Your child is now at school");
-        }
-
-        // تحديث الحالة السابقة في Firestore
-        await userRef.update({'previousState': state});
-
-        previousState = state;
-      }
-    });
-  });
-}
 
   void clearNotifications() async {
 
 
     await prefs.remove('notifications');
     await prefs.remove('notification_time');
+     setState(() {
+  Notifications.clear();
+  Notificationstime.clear();
+           });
+  }
 
-    setState(() {
-      Notifications.clear();
-      Notificationstime.clear();
-    });
+  void initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+
+setState(() {
+  Notifications = prefs.getStringList('notifications') ?? [];
+  Notificationstime = prefs.getStringList('notification_time') ?? [];
+});
+
   }
 
 
