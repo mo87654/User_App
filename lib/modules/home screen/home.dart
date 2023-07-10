@@ -128,8 +128,8 @@ class _MapScreen1State extends State<MapScreen1> {
 
   @override
   void dispose() {
-    timer?.cancel();
     super.dispose();
+    timer?.cancel();
   }
 
 
@@ -197,9 +197,13 @@ class _MapScreen1State extends State<MapScreen1> {
                   } else {
                     print('Document does not exist');
                   }
-                } else if (snapshot.hasError) {
+                } else if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                   print('Error retrieving user state: ${snapshot.error}');
                 }
+
                 return Container(
                   width: 430,
                   height: 120,

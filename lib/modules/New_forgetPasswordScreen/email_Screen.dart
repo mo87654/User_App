@@ -20,7 +20,7 @@ class _forgetPasswordState extends State<forgetPassword> {
 
 
   TextEditingController emailController = TextEditingController();
-  final emailRegex = RegExp(r'^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$');
+  final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$');
 
 
   @override

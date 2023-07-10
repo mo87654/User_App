@@ -28,16 +28,15 @@ Future<String> getStateFromFirestore() async {
 
 
 void startTimer() {
-  timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+  timer = Timer.periodic(const Duration(seconds: 3), (timer) async {
     CollectionReference users = FirebaseFirestore.instance.collection('Students');
     final user = FirebaseAuth.instance.currentUser!;
     final String uid = user.uid;
     var state = await users.doc(uid).get().then((value) {
       return value.get('state');
+
     });
 
-
-    // استرجاع الحالة السابقة من Firestore
     final userRef = users.doc(user.uid);
     final userSnapshot = await userRef.get();
     var previousState = userSnapshot.get('previousState');
@@ -64,7 +63,7 @@ void startTimer() {
 
   });
 }
- showNotification() async {
+showNotification() async {
   var formattedTime = DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.now());
   final String name = await getStateFromFirestore();
   var play = 'dear $name, '
@@ -79,29 +78,17 @@ void startTimer() {
       payload: 'item x');
 
 
-    Notifications.add(play);
-    Notificationstime.add(formattedTime);
+  Notifications.add(play);
+  Notificationstime.add(formattedTime);
 
 
 
   await prefs.setStringList('notifications', Notifications);
   prefs.setStringList('notification_time', Notificationstime);
-  // CollectionReference users = FirebaseFirestore.instance.collection('Students');
-  // final user = FirebaseAuth.instance.currentUser!;
-  // final String uid = user.uid;
-  // var phonenum = await users.doc(uid).get().then((value) {
-  //   return value.get('tele-num');
-  // });
-  //
-  // sendSMS(message: "Your child is now at home!", recipients: [phonenum]).then((value) {
-  //   print("SMS sent successfully!");
-  // }).catchError((onError) {
-  //   print("Error while sending SMS: $onError");
-  // });
 
 }
 
- showSecondNotification() async {
+showSecondNotification() async {
   var formattedTime2 = DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.now()); // تنسيق الوقت
 
 
@@ -119,28 +106,17 @@ void startTimer() {
       payload: 'item x');
 
 
-    Notifications.add(playload1);
-    Notificationstime.add(formattedTime2);
+  Notifications.add(playload1);
+  Notificationstime.add(formattedTime2);
 
 
   await prefs.setStringList('notifications', Notifications);
 
 
   prefs.setStringList('notification_time', Notificationstime);
-  // CollectionReference users = FirebaseFirestore.instance.collection('Students');
-  // final user = FirebaseAuth.instance.currentUser!;
-  // final String uid = user.uid;
-  // var phonenum = await users.doc(uid).get().then((value) {
-  //   return value.get('tele-num');
-  // });
-  //
-  // sendSMS(message: "Your child is now in bus!", recipients: [phonenum]).then((value) {
-  //   print("SMS sent successfully!");
-  // }).catchError((onError) {
-  //   print("Error while sending SMS: $onError");
-  // });
+
 }
- showThirdNotification() async {
+showThirdNotification() async {
   var formattedTime3 = DateFormat('yyyy-MM-dd hh:mm a').format(DateTime.now()); // تنسيق الوقت
   final String name = await getStateFromFirestore();
 
@@ -156,24 +132,11 @@ void startTimer() {
       payload: 'item x');
 
 
-    Notifications.add(playload);
-    Notificationstime.add(formattedTime3);
+  Notifications.add(playload);
+  Notificationstime.add(formattedTime3);
 
   await prefs.setStringList('notifications', Notifications);
   prefs.setStringList('notification_time', Notificationstime);
-
-  // CollectionReference users = FirebaseFirestore.instance.collection('Students');
-  // final user = FirebaseAuth.instance.currentUser!;
-  // final String uid = user.uid;
-  // var phonenum = await users.doc(uid).get().then((value) {
-  //   return value.get('tele-num');
-  // });
-  //
-  // sendSMS(message: "Your child has arrived safely at school!", recipients: [phonenum]).then((value) {
-  //   print("SMS sent successfully!");
-  // }).catchError((onError) {
-  //   print("Error while sending SMS: $onError");
-  // });
 
 
 }

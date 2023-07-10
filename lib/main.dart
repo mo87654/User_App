@@ -1,7 +1,4 @@
 
-import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +8,7 @@ import 'package:responsive_framework/responsive_wrapper.dart';
 import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'layout/user_layout.dart';
 import 'modules/login screen/login.dart';
-import 'package:user_app/modules/notifications%20screen/notification.dart';
-
-import 'modules/notifications screen/notificationpart2.dart';
+import 'shared/component/notifications components.dart';
 
 
 bool isLogin = false;

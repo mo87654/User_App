@@ -117,8 +117,7 @@ class _MyAccountState extends State<MyAccount> {
   @override
   Widget build(BuildContext context) {
 
-    return
-      Scaffold(
+    return Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xff515281),
           elevation: 0,
@@ -134,475 +133,478 @@ class _MyAccountState extends State<MyAccount> {
           child: Drawer(
             shadowColor: Color(0xff4d6aaa),
             backgroundColor: Colors.white,
-            child: Column(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  ListTile(
 
-              children: [
-                ListTile(
-
-                  leading:FutureBuilder<String?>(
-                    future:   loadimagedrawer(),
-                    builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-                      if (snapshot.hasData && snapshot.data != null) {
-                        return CircleAvatar(
-                          radius: 30,
-                          backgroundImage: FileImage(File(snapshot.data!)),
-                        );
-                      } else {
-                        return CircleAvatar(
-                          radius: 50,
-                          child: Icon(Icons.person),
-                        );
-                      }
-                    },
-                  ),
-                  title:FutureBuilder(
-                    future: getuserinfo(),
-                    builder: (_ , AsyncSnapshot snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      return Text(snapshot.data['name'].toString(),
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-
-                        ),
-                      );
-
-                    },
-                  ),
-
-
-                  subtitle:  FutureBuilder(
-                    future: getuserinfo(),
-                    builder: (_ , AsyncSnapshot snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      return Text(snapshot.data['email'].toString(),
-
-                      );
-
-                    },
-                  ),
-                  onTap: () {
-
-                  },
-                ),
-
-                const Padding(
-                  padding: EdgeInsets.only(right: 24,top: 24, bottom: 16),
-                  child: Divider(
-                    color: Colors.black26,
-                    height: 1,
-                  ),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.perm_contact_cal_outlined),
-                  title: const Text(' Edit Profile ',
-                    style: TextStyle(
-                        fontSize: 17
+                    leading:FutureBuilder<String?>(
+                      future:   loadimagedrawer(),
+                      builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+                        if (snapshot.hasData && snapshot.data != null) {
+                          return CircleAvatar(
+                            radius: 30,
+                            backgroundImage: FileImage(File(snapshot.data!)),
+                          );
+                        } else {
+                          return CircleAvatar(
+                            radius: 50,
+                            child: Icon(Icons.person),
+                          );
+                        }
+                      },
                     ),
-                  ),
-
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(
-                            builder: (context) => PersonalInfo()
-                        )
-                    );
-                  },
-                ),
-
-                Row(
-                  children: [
-                    Expanded(
-                      child: ListTile(
-                        leading: const Icon(Icons.notification_important),
-                        title: const Text('Notifications',
+                    title:FutureBuilder(
+                      future: getuserinfo(),
+                      builder: (_ , AsyncSnapshot snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        return Text(snapshot.data['name'].toString(),
                           style: TextStyle(
-                              fontSize: 17
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+
                           ),
+                        );
 
-                        ),
+                      },
+                    ),
 
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40.0),
-                      child: Switch(onChanged: (bool value) {  }, value: true, activeColor: app_Color(),),
-                    ),
-                  ],
-                ),
 
-                ListTile(
-                  leading: const Icon(Icons.lock),
-                  title: const Text('Change Password',
-                    style: TextStyle(
-                        fontSize: 17
+                    subtitle:  FutureBuilder(
+                      future: getuserinfo(),
+                      builder: (_ , AsyncSnapshot snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        return Text(snapshot.data['email'].toString(),
+
+                        );
+
+                      },
                     ),
+                    onTap: () {
+
+                    },
                   ),
 
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(
-                            builder: (context) => ChangePassword()
-                        )
-                    );
-                  },
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20),
-                  child: Divider(
-                    color: Colors.black26,
-                    height: 1,
-                  ),
-                ),
-
-                ListTile(
-                  leading: const Icon(Icons.error),
-                  title: const Text('About us',
-                    style: TextStyle(
-                        fontSize: 17
+                  const Padding(
+                    padding: EdgeInsets.only(right: 24,top: 24, bottom: 16),
+                    child: Divider(
+                      color: Colors.black26,
+                      height: 1,
                     ),
                   ),
-
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(
-                            builder: (context) => AboutUsScreen()
-                        )
-                    );
-                  },
-                ),
-
-                ListTile(
-                  leading: const Icon(Icons.help),
-                  title: const Text('Help!',
-                    style: TextStyle(
-                        fontSize: 17
-                    ),
-                  ),
-
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(
-                            builder: (context) => HelpPage()
-                        )
-                    );
-                  },
-                ),
-
-                ListTile(
-                    leading: const Icon(Icons.logout),
-                    title: const Text('Log Out',
+                  ListTile(
+                    leading: const Icon(Icons.perm_contact_cal_outlined),
+                    title: const Text(' Edit Profile ',
                       style: TextStyle(
                           fontSize: 17
                       ),
                     ),
 
                     onTap: () {
-                      showDialog(context: context,
-                        builder: (BuildContext context) => SignOutMessage(),);
-                    }
-                ),
-              ],
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) => PersonalInfo()
+                          )
+                      );
+                    },
+                  ),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ListTile(
+                          leading: const Icon(Icons.notification_important),
+                          title: const Text('Notifications',
+                            style: TextStyle(
+                                fontSize: 17
+                            ),
+
+                          ),
+
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 40.0),
+                        child: Switch(onChanged: (bool value) {  }, value: true, activeColor: app_Color(),),
+                      ),
+                    ],
+                  ),
+
+                  ListTile(
+                    leading: const Icon(Icons.lock),
+                    title: const Text('Change Password',
+                      style: TextStyle(
+                          fontSize: 17
+                      ),
+                    ),
+
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) => ChangePassword()
+                          )
+                      );
+                    },
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 20, right: 20),
+                    child: Divider(
+                      color: Colors.black26,
+                      height: 1,
+                    ),
+                  ),
+
+                  ListTile(
+                    leading: const Icon(Icons.error),
+                    title: const Text('About us',
+                      style: TextStyle(
+                          fontSize: 17
+                      ),
+                    ),
+
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) => AboutUsScreen()
+                          )
+                      );
+                    },
+                  ),
+
+                  ListTile(
+                    leading: const Icon(Icons.help),
+                    title: const Text('Help!',
+                      style: TextStyle(
+                          fontSize: 17
+                      ),
+                    ),
+
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                              builder: (context) => HelpPage()
+                          )
+                      );
+                    },
+                  ),
+
+                  ListTile(
+                      leading: const Icon(Icons.logout),
+                      title: const Text('Log Out',
+                        style: TextStyle(
+                            fontSize: 17
+                        ),
+                      ),
+
+                      onTap: () {
+                        showDialog(context: context,
+                          builder: (BuildContext context) => SignOutMessage(),);
+                      }
+                  ),
+                ],
+              ),
             ),
 
 
           ),
         ),
 
-        body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+        body: SingleChildScrollView(
+          child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
 
-            children: [
-              Container(
-                height: 260 ,
-                //width: double.infinity,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  alignment: AlignmentDirectional.bottomCenter,
+              children: [
+                Container(
+                  height: 260 ,
+                  //width: double.infinity,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: AlignmentDirectional.bottomCenter,
 
-                  children:<Widget> [
-                    Align(
+                    children:<Widget> [
+                      Align(
 
 
-                      alignment: AlignmentDirectional.topStart,
-                      child: CustomPaint(
-                        painter: HeaderCurvedContainer(),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height,
+                        alignment: AlignmentDirectional.topStart,
+                        child: CustomPaint(
+                          painter: HeaderCurvedContainer(),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
 
-                          child: const Align(
-                            alignment: AlignmentDirectional.topCenter,
-                            child: Padding(
-                              padding: EdgeInsets.all(50),
-                              child: Text(
-                                "",
-                                style: TextStyle(
-                                  fontSize: 40,
-                                  letterSpacing: 1.5,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
+                            child: const Align(
+                              alignment: AlignmentDirectional.topCenter,
+                              child: Padding(
+                                padding: EdgeInsets.all(50),
+                                child: Text(
+                                  "",
+                                  style: TextStyle(
+                                    fontSize: 40,
+                                    letterSpacing: 1.5,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
+
+                      ),
+
+                      Stack(
+                          alignment: AlignmentDirectional.bottomEnd,
+                          clipBehavior: Clip.none,
+                          children:<Widget>[
+                            _imagepath != null?
+                            CircleAvatar(backgroundImage: FileImage(File(_imagepath!)),radius: 80,)
+                                :    GestureDetector(
+                              onTap: () {
+                                takePhoto(ImageSource.gallery);
+                              },
+                              child: CircleAvatar(
+                                  radius: 64,
+                                  backgroundImage: _imageFile == null ?
+                                  AssetImage("assets/images/User3.jpg")
+                                      : FileImage(File(_imageFile!.path)) as ImageProvider),
+                            ),
+
+
+                            CircleAvatar(
+                              backgroundColor:  const Color(0xff515281),
+                              radius: 19,
+                              child: InkWell(
+                                onTap: () {
+
+                                  setState(() {
+                                    showModalBottomSheet<void>(
+                                      context: context,
+                                      builder: (context) => bottomSheet(),
+
+                                    );
+                                  });
+                                },
+                                child: Icon(Icons.camera_alt_outlined, color: white),
+                              ),
+                            ),
+                          ]
+
+                      ),
+                    ],
+                  ),
+                ),
+
+              ],
+
+            ),
+
+
+
+
+
+            Padding(
+              padding: const EdgeInsets.only(top: 25, left: 25, right: 25),
+              child: Column(
+
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 25.0),
+                      child:FutureBuilder(
+                        future: getuserinfo(),
+                        builder: (_, AsyncSnapshot snapshot) {
+                          if(snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+
+                          nameController.text = snapshot.data['name'].toString();
+                          return TextFormField(
+
+                            controller: nameController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  width: 1.0,
+                                ),
+                              ),
+                              labelText: 'your name',
+                            ),
+                            readOnly: true,
+                            style: TextStyle
+                              (
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+
+                          );
+                        },
                       ),
 
                     ),
 
-                    Stack(
-                        alignment: AlignmentDirectional.bottomEnd,
-                        clipBehavior: Clip.none,
-                        children:<Widget>[
-                          _imagepath != null?
-                          CircleAvatar(backgroundImage: FileImage(File(_imagepath!)),radius: 80,)
-                              :    GestureDetector(
-                            onTap: () {
-                              takePhoto(ImageSource.gallery);
-                            },
-                            child: CircleAvatar(
-                                radius: 64,
-                                backgroundImage: _imageFile == null ?
-                                AssetImage("assets/images/User3.jpg")
-                                    : FileImage(File(_imageFile!.path)) as ImageProvider),
-                          ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 25),
+                      child: FutureBuilder(
+                        future: getuserinfo(),
+                        builder: (_, AsyncSnapshot snapshot) {
+                          if(snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          // تعيين النص المستلم من قاعدة البيانات في حقل Textformfield
+                          emailController.text = snapshot.data['email'].toString();
+                          return TextFormField(
 
-
-                          CircleAvatar(
-                            backgroundColor:  const Color(0xff515281),
-                            radius: 19,
-                            child: InkWell(
-                              onTap: () {
-
-                                setState(() {
-                                  showModalBottomSheet<void>(
-                                    context: context,
-                                    builder: (context) => bottomSheet(),
-
-                                  );
-                                });
-                              },
-                              child: Icon(Icons.camera_alt_outlined, color: white),
+                            controller: emailController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  width: 2.0,
+                                ),
+                              ),
+                              labelText: 'your email',
                             ),
-                          ),
-                        ]
+                            readOnly: true,
+                            style: TextStyle
+                              (
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
 
+                          );
+                        },
+                      ),
                     ),
-                  ],
-                ),
+
+
+                    Padding(
+                      padding: const EdgeInsets.only(top:25.0),
+                      child: FutureBuilder(
+                        future: getuserinfo(),
+                        builder: (_, AsyncSnapshot snapshot) {
+                          if(snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+
+                          gradController.text = snapshot.data['grad'].toString();
+                          return TextFormField(
+
+                            controller: gradController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  width: 2.0,
+                                ),
+                              ),
+                              labelText: 'your level',
+                            ),
+                            readOnly: true,
+                            style: TextStyle
+                              (
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+
+                          );
+                        },
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(top:25.0),
+                      child: FutureBuilder(
+                        future: getuserinfo(),
+                        builder: (_, AsyncSnapshot snapshot) {
+                          if(snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          // تعيين النص المستلم من قاعدة البيانات في حقل Textformfield
+                          addressController.text = snapshot.data['address'].toString();
+                          return TextFormField(
+
+                            controller: addressController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  width: 2.0,
+                                ),
+                              ),
+                              labelText: 'your address',
+                            ),
+                            readOnly: true,
+                            style: TextStyle
+                              (
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+
+                          );
+                        },
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(top: 25.0),
+                      child: FutureBuilder(
+                        future: getuserinfo(),
+                        builder: (_, AsyncSnapshot snapshot) {
+                          if(snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+
+                          busController.text = snapshot.data['Bus_number'].toString();
+                          return TextFormField(
+
+                            controller: busController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(
+                                  width: 2.0,
+                                ),
+                              ),
+                              labelText: 'Bus_number',
+                            ),
+                            readOnly: true,
+                            style: TextStyle
+                              (
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+
+                          );
+                        },
+                      ),
+                    ),
+                  ]
+
               ),
-
-            ],
-
-          ),
-
-
-
-
-
-          Padding(
-            padding: const EdgeInsets.only(top: 25, left: 25, right: 25),
-            child: Column(
-
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 25.0),
-                    child:FutureBuilder(
-                      future: getuserinfo(),
-                      builder: (_, AsyncSnapshot snapshot) {
-                        if(snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-
-                        nameController.text = snapshot.data['name'].toString();
-                        return TextFormField(
-
-                          controller: nameController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                width: 1.0,
-                              ),
-                            ),
-                            labelText: 'your name',
-                          ),
-                          readOnly: true,
-                          style: TextStyle
-                            (
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-
-                        );
-                      },
-                    ),
-
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(top: 25),
-                    child: FutureBuilder(
-                      future: getuserinfo(),
-                      builder: (_, AsyncSnapshot snapshot) {
-                        if(snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                        // تعيين النص المستلم من قاعدة البيانات في حقل Textformfield
-                        emailController.text = snapshot.data['email'].toString();
-                        return TextFormField(
-
-                          controller: emailController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                width: 2.0,
-                              ),
-                            ),
-                            labelText: 'your email',
-                          ),
-                          readOnly: true,
-                          style: TextStyle
-                            (
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-
-                        );
-                      },
-                    ),
-                  ),
-
-
-                  Padding(
-                    padding: const EdgeInsets.only(top:25.0),
-                    child: FutureBuilder(
-                      future: getuserinfo(),
-                      builder: (_, AsyncSnapshot snapshot) {
-                        if(snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-
-                        gradController.text = snapshot.data['grad'].toString();
-                        return TextFormField(
-
-                          controller: gradController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                width: 2.0,
-                              ),
-                            ),
-                            labelText: 'your level',
-                          ),
-                          readOnly: true,
-                          style: TextStyle
-                            (
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-
-                        );
-                      },
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(top:25.0),
-                    child: FutureBuilder(
-                      future: getuserinfo(),
-                      builder: (_, AsyncSnapshot snapshot) {
-                        if(snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                        // تعيين النص المستلم من قاعدة البيانات في حقل Textformfield
-                        addressController.text = snapshot.data['address'].toString();
-                        return TextFormField(
-
-                          controller: addressController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                width: 2.0,
-                              ),
-                            ),
-                            labelText: 'your address',
-                          ),
-                          readOnly: true,
-                          style: TextStyle
-                            (
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-
-                        );
-                      },
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(top: 25.0),
-                    child: FutureBuilder(
-                      future: getuserinfo(),
-                      builder: (_, AsyncSnapshot snapshot) {
-                        if(snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-
-                        busController.text = snapshot.data['Bus_number'].toString();
-                        return TextFormField(
-
-                          controller: busController,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(
-                                width: 2.0,
-                              ),
-                            ),
-                            labelText: 'Bus_number',
-                          ),
-                          readOnly: true,
-                          style: TextStyle
-                            (
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-
-                        );
-                      },
-                    ),
-                  ),
-                ]
-
             ),
-          ),
 
 
 
-        ],
+          ],
 
     ),
+        ),
       );
 
 
