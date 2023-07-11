@@ -147,7 +147,7 @@ class _MapScreen1State extends State<MapScreen1> {
                     mapType: MapType.normal,
                     initialCameraPosition: const CameraPosition(
                       target: LatLng(30.045447, 31.233975),
-                      zoom: 8.5,
+                      zoom: 9.5,
                     ),
                     markers: Set<Marker>.from(markers),
                     onMapCreated: _onMapCreated,

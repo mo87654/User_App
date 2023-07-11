@@ -23,7 +23,7 @@ Future<String> getStateFromFirestore() async {
   final user = FirebaseAuth.instance.currentUser!;
   final String uid = user.uid;
   final DocumentSnapshot userSnapshot = await users.doc(uid).get();
-  return userSnapshot.get('name');
+  return userSnapshot.get('parent_name');
 }
 
 

@@ -41,7 +41,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
         .collection('Students')
         .doc(user!.uid)
         .get();
-    _usernameController.text = userData['name'];
+    _usernameController.text = userData['parent_name'];
     _phoneNumberController.text = userData['tele-num'];
 
 
@@ -54,7 +54,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
 
     await FirebaseFirestore.instance.collection('Students').doc(user!.uid).update({
-      'name': _usernameController.text,
+      'parent_name': _usernameController.text,
       'tele-num': _phoneNumberController.text,
     });
   }

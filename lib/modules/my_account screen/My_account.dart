@@ -33,7 +33,7 @@ class _MyAccountState extends State<MyAccount> {
     final CollectionReference users = FirebaseFirestore.instance.collection('Students');
     final String uid = user.uid;
     final result = await  users.doc(uid).get();
-    return result.data()??['name'];
+    return result.data()??['parent_name'];
 
   }
 
@@ -160,7 +160,7 @@ class _MyAccountState extends State<MyAccount> {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         }
-                        return Text(snapshot.data['name'].toString(),
+                        return Text(snapshot.data['parent_name'].toString(),
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
@@ -427,7 +427,7 @@ class _MyAccountState extends State<MyAccount> {
                             return Center(child: CircularProgressIndicator());
                           }
 
-                          nameController.text = snapshot.data['name'].toString();
+                          nameController.text = snapshot.data['parent_name'].toString();
                           return TextFormField(
 
                             controller: nameController,
